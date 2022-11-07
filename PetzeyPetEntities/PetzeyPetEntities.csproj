@@ -52,7 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Allergy.cs" />
+    <Compile Include="OwnerHasPet.cs" />
     <Compile Include="Pet.cs" />
+    <Compile Include="PetAndAppointments.cs" />
     <Compile Include="PetOwner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
