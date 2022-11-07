@@ -10,17 +10,17 @@ namespace PetzeyPetEntities
     public class PetOwner
     {
         [Key]
-        public int PetOwnerId;
+        public int PetOwnerId { get; set; }
         [Required]
-        public string OwnerName;
+        public string OwnerName { get; set; }
         [Required]
-        public string OwnerEmail;
+        public string OwnerEmail { get; set; }
         [Required]
-        public string OwnerPhone;
+        public string OwnerPhone { get; set; }
         [Required]
-        public string OwnerLocation;
+        public string OwnerLocation { get; set; }
         [Required]
-        public string ImageUrl;
-        public List<int> PetIds;
+        public string ImageUrl { get; set; }
+        public List<OwnerHasPet> PetIds { get; set; }
     }
 }
