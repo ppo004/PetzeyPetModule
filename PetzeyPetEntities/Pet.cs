@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-<<<<<<< Updated upstream
-=======
-using Microsoft.Build.Framework;
+
+
 using RequiredAttribute = System.ComponentModel.DataAnnotations.RequiredAttribute;
 
->>>>>>> Stashed changes
 namespace PetzeyPetEntities
 {
     public class Pet
@@ -35,7 +33,7 @@ namespace PetzeyPetEntities
         public string Breed { get; set; }
         [Required]
         public string ImageUrl { get; set; }
-        public List<int> AppointmentIds { get; set; }
+        public List<PetAndAppointments> AppointmentIds { get; set; }
 
     }
 }
