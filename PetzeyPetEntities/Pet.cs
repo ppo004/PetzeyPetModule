@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-<<<<<<< Updated upstream
-=======
-using Microsoft.Build.Framework;
+
+
 using RequiredAttribute = System.ComponentModel.DataAnnotations.RequiredAttribute;
 
->>>>>>> Stashed changes
 namespace PetzeyPetEntities
 {
     public class Pet

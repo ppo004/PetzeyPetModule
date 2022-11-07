@@ -17,5 +17,9 @@ namespace PetzeyPetDataAccessLayer
         public DbSet<Pet> Pets { get; set; }
         public DbSet<PetOwner> PetOwners { get; set; }
         public DbSet<Allergy> Allergies { get; set; }
+        public DbSet<OwnerHasPet> OwnerHasPets { get; set; }
+        public DbSet<PetAndAppointments> PetAndAppointments { get; set; }
+
+
     }
 }
