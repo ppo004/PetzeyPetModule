@@ -33,7 +33,7 @@ namespace PetzeyPetEntities
         public string Breed { get; set; }
         [Required]
         public string ImageUrl { get; set; }
-        public List<int> AppointmentIds { get; set; }
+        public List<PetAndAppointments> AppointmentIds { get; set; }
 
     }
 }
