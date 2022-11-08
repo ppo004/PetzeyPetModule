@@ -308,6 +308,16 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PetzeyPetDataAccessLayer\PetzeyPetDataAccessLayer.csproj">
+      <Project>{edcbc7b8-82cf-4330-a954-cb3b56d7960b}</Project>
+      <Name>PetzeyPetDataAccessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PetzeyPetEntities\PetzeyPetEntities.csproj">
+      <Project>{ECCE5D65-D768-44FC-8CB7-2BAC0B7CAE98}</Project>
+      <Name>PetzeyPetEntities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

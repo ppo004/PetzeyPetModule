@@ -13,7 +13,8 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
 
         public void CreateOwner(PetOwner petOwner)
         {
-            throw new NotImplementedException();
+            db.PetOwners.Add(petOwner);
+            db.SaveChanges();
         }
 
         public void AddProfilePic(int petOwnerId, string imageUrl)

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PetzeyPetDataAccessLayer.PetOwnerRepository;
+using PetzeyPetEntities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,7 +11,7 @@ namespace PetzeyPetApi.Controllers
 {
     public class PetOwnerController : ApiController
     {
-        
+        private IPetOwnerRepository repo=new PetOwnerRepository();
         public IHttpActionResult Post(long OwnerID, string picUrl)
         {
             // validation
@@ -19,5 +21,11 @@ namespace PetzeyPetApi.Controllers
             // location / status code 201 / resource
             return Ok();
         }
+        /*[HttpPost]*/
+        
+       /* public IHttpActionResult PostOwner(PetOwner petOwner )
+        {
+
+        }*/
     }
 }
