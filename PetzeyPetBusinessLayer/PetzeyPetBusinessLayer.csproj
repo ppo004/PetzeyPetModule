@@ -54,12 +54,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="PetBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PetzeyPetDataAccessLayer\PetzeyPetDataAccessLayer.csproj">
+      <Project>{edcbc7b8-82cf-4330-a954-cb3b56d7960b}</Project>
+      <Name>PetzeyPetDataAccessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PetzeyPetDTOs\PetzeyPetDTOs.csproj">
+      <Project>{5A97DAB9-CC7A-49DE-A8C7-C3FDB4F6D992}</Project>
+      <Name>PetzeyPetDTOs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PetzeyPetEntities\PetzeyPetEntities.csproj">
+      <Project>{ECCE5D65-D768-44FC-8CB7-2BAC0B7CAE98}</Project>
+      <Name>PetzeyPetEntities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

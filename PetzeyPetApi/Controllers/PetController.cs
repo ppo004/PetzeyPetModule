@@ -1,4 +1,5 @@
-﻿using PetzeyPetDataAccessLayer;
+﻿using AutoMapper;
+using PetzeyPetBusinessLayer;
 using PetzeyPetDTOs;
 using PetzeyPetEntities;
 using System;
@@ -13,18 +14,41 @@ namespace PetzeyPetApi.Controllers
 {
     public class PetController : ApiController
     {
-        IPetDbRepository repo = new PetDbRepository();
-        // GET: Pet
-      public IHttpActionResult GetPets()
+        PetBll bll = new PetBll();
+
+        public IHttpActionResult PostPet(AddPetDto pet)
         {
-            List<PetDto> pets=  repo.GetAllPets();
-            return Ok(pets);
+            PetDto petDto = bll.CreatePet(pet);
+            if (petDto == null)
+                return BadRequest();
+            return Ok(petDto);
+        }
+
+        public IHttpActionResult DeletePet(int id)
+        {
+            if (bll.DeletePet(id))
+                return Ok();
+            return BadRequest();
+        }
+
+        public IHttpActionResult Putpet(PetDto pet)
+        {
+            PetDto petDto = bll.EditPet(pet);
+            if (petDto == null)
+                return BadRequest();
+            return Ok(petDto);
+
+
         }
 
         public IHttpActionResult GetPetById(int id)
         {
-            Pet pet = repo.GetPetById(id);
-            return Ok(pet);
+            PetDto petDto = bll.GetPetById(id);
+            if (petDto == null)
+                return NotFound();
+            return Ok(petDto);
         }
+
     }
 }
+    

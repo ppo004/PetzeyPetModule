@@ -319,9 +319,9 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PetzeyPetDataAccessLayer\PetzeyPetDataAccessLayer.csproj">
-      <Project>{edcbc7b8-82cf-4330-a954-cb3b56d7960b}</Project>
-      <Name>PetzeyPetDataAccessLayer</Name>
+    <ProjectReference Include="..\PetzeyPetBusinessLayer\PetzeyPetBusinessLayer.csproj">
+      <Project>{a9b3977d-2b73-401f-9288-23a00cfa488c}</Project>
+      <Name>PetzeyPetBusinessLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\PetzeyPetDTOs\PetzeyPetDTOs.csproj">
       <Project>{5A97DAB9-CC7A-49DE-A8C7-C3FDB4F6D992}</Project>
