@@ -25,7 +25,22 @@ namespace PetzeyPetApi.Controllers
 
         public IHttpActionResult PostOwner(PetOwner petOwner)
         {
-            if()
+            if (repo.CreateOwner(petOwner))
+            {
+                return Ok();
+            }
+            else return BadRequest();
+        }
+        public IHttpActionResult Edit(PetOwner petOwner)
+        {
+            if (repo.EditOwner(petOwner) && ModelState.IsValid)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }
