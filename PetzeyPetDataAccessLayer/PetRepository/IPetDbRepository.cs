@@ -1,4 +1,5 @@
-﻿using PetzeyPetEntities;
+﻿using PetzeyPetDTOs;
+using PetzeyPetEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,12 @@ namespace PetzeyPetDataAccessLayer
 {
     public interface IPetDbRepository
     {
-        void AddAppointmentId(int appointmentId, int petId);
-        List<string> GetAllPets();
-        void CreatePet(Pet pet);
-        void EditPet(Pet pet);
+        void AddAppointmentId(PetAppDto petAppDto);
+        List<PetDto> GetAllPets();
+        void CreatePet(AddPetDto petDto);
+        void EditPet(AddPetDto petDto);
         void DeletePet(int petId);
+        Pet GetPetById(int id);
 
     }
 }
