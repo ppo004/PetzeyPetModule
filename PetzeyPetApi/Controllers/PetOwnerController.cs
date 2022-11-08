@@ -21,11 +21,11 @@ namespace PetzeyPetApi.Controllers
             // location / status code 201 / resource
             return Ok();
         }
-        /*[HttpPost]*/
-        
-       /* public IHttpActionResult PostOwner(PetOwner petOwner )
-        {
+        [HttpPost]
 
-        }*/
+        public IHttpActionResult PostOwner(PetOwner petOwner)
+        {
+            if()
+        }
     }
 }
