@@ -29,6 +29,6 @@ namespace PetzeyPetDTOs
         public string Breed { get; set; }
 
         public string ImageUrl { get; set; }
-        public List<PetAndAppointments> AppointmentIds { get; set; }
+       
     }
 }
