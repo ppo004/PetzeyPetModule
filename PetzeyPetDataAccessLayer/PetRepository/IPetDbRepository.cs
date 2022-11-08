@@ -12,7 +12,7 @@ namespace PetzeyPetDataAccessLayer
     public interface IPetDbRepository
     {
         PetAndAppointments AddAppointmentId(PetAppDto petAppDto);
-        List<PetDto> GetAllPets();
+        List<UpdatePetDto> GetAllPets();
         int CreatePet(Pet pet);
         Pet EditPet(Pet pet);
         void DeletePet(int petId);
