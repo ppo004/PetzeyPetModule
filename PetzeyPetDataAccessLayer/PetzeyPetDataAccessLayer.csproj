@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.10.1.1\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -64,6 +67,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PetzeyPetDTOs\PetzeyPetDTOs.csproj">
+      <Project>{5A97DAB9-CC7A-49DE-A8C7-C3FDB4F6D992}</Project>
+      <Name>PetzeyPetDTOs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PetzeyPetEntities\PetzeyPetEntities.csproj">
       <Project>{ECCE5D65-D768-44FC-8CB7-2BAC0B7CAE98}</Project>
       <Name>PetzeyPetEntities</Name>

@@ -10,7 +10,7 @@ namespace PetzeyPetDataAccessLayer
 {
     public class PetDbContext : DbContext
     {
-        public PetDbContext() : base("name=DefaultConnection")
+        public PetDbContext() : base("DefaultConnection")
         {
 
         }
@@ -19,6 +19,5 @@ namespace PetzeyPetDataAccessLayer
         public DbSet<Allergy> Allergies { get; set; }
         public DbSet<OwnerHasPet> OwnerHasPets { get; set; }
         public DbSet<PetAndAppointments> PetAndAppointments { get; set; }
-
     }
 }
