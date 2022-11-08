@@ -20,9 +20,5 @@ namespace PetzeyPetDataAccessLayer
         public DbSet<OwnerHasPet> OwnerHasPets { get; set; }
         public DbSet<PetAndAppointments> PetAndAppointments { get; set; }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 1e9d0f8d755c4a691a791158381ae64e9b8649ed
     }
 }
