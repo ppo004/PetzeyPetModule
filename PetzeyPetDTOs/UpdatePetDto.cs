@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PetzeyPetDTOs
 {
-    public class PetDto
+    public class UpdatePetDto
     {
         public int PetId { get; set; }
 
@@ -29,6 +29,6 @@ namespace PetzeyPetDTOs
         public string Breed { get; set; }
 
         public string ImageUrl { get; set; }
-        public List<PetAndAppointments> AppointmentIds { get; set; }
+       
     }
 }

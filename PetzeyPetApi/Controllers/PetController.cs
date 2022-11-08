@@ -18,7 +18,7 @@ namespace PetzeyPetApi.Controllers
 
         public IHttpActionResult PostPet(AddPetDto pet)
         {
-            PetDto petDto = bll.CreatePet(pet);
+            UpdatePetDto petDto = bll.CreatePet(pet);
             if (petDto == null)
                 return BadRequest();
             return Ok(petDto);
@@ -31,9 +31,9 @@ namespace PetzeyPetApi.Controllers
             return BadRequest();
         }
 
-        public IHttpActionResult Putpet(PetDto pet)
+        public IHttpActionResult Putpet(UpdatePetDto pet)
         {
-            PetDto petDto = bll.EditPet(pet);
+            UpdatePetDto petDto = bll.EditPet(pet);
             if (petDto == null)
                 return BadRequest();
             return Ok(petDto);
@@ -43,7 +43,7 @@ namespace PetzeyPetApi.Controllers
 
         public IHttpActionResult GetPetById(int id)
         {
-            PetDto petDto = bll.GetPetById(id);
+            UpdatePetDto petDto = bll.GetPetById(id);
             if (petDto == null)
                 return NotFound();
             return Ok(petDto);
