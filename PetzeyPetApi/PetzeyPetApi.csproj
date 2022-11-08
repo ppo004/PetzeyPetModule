@@ -226,6 +226,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PetController.cs" />
+    <Compile Include="Controllers\PetOwnerController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -288,6 +289,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Pet\" />
+    <Folder Include="Views\PetOwner\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -326,6 +328,9 @@
     <ProjectReference Include="..\PetzeyPetDTOs\PetzeyPetDTOs.csproj">
       <Project>{5A97DAB9-CC7A-49DE-A8C7-C3FDB4F6D992}</Project>
       <Name>PetzeyPetDTOs</Name>
+    <ProjectReference Include="..\PetzeyPetDataAccessLayer\PetzeyPetDataAccessLayer.csproj">
+      <Project>{edcbc7b8-82cf-4330-a954-cb3b56d7960b}</Project>
+      <Name>PetzeyPetDataAccessLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\PetzeyPetEntities\PetzeyPetEntities.csproj">
       <Project>{ECCE5D65-D768-44FC-8CB7-2BAC0B7CAE98}</Project>
