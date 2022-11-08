@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace PetzeyPetDTOs
 {
-    public class Class1
+    public class PetAppDto
     {
+        public int petId { get; set; }
+        public int AppointmentId { get; set; }
     }
 }
