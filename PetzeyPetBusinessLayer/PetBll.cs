@@ -31,32 +31,27 @@ namespace PetzeyPetBusinessLayer
                  cfg.CreateMap<Pet, UpdatePetDto>()
 
              );
-       
-/// <summary>
-/// BLL Functions
-/// </summary>
-/// 
 
-         
+        /// <summary>
+        /// BLL Functions
+        /// </summary>
+        /// 
+
+
         public bool AddAppointmentsToPet(PetAppDto petAppdto)
         {
-          int id= repo.AddAppointmentId(petAppdto.petId, petAppdto.AppointmentId);
-          PetAndAppointments appointment = repo.GetPetandAppById(id);
+            int id = repo.AddAppointmentId(petAppdto.petId, petAppdto.AppointmentId);
+            PetAndAppointments appointment = repo.GetPetandAppById(id);
             if (appointment == null)
                 return false;
             return true;
-            
+
         }
 
 
         public UpdatePetDto CreatePet(AddPetDto petDto)
         {
             Mapper mapper = new Mapper(config);
-            Pet pet = mapper.Map<Pet>(petDto);
-            pet.AppointmentIds = null;
-
-            int id = repo.CreatePet(pet);
-            Pet pet1 = repo.GetPetById(id);
             try
             {
                 Pet pet = mapper.Map<Pet>(petDto);
@@ -173,16 +168,9 @@ namespace PetzeyPetBusinessLayer
 
         public async Task<UpdatePetDto> GetPetByIdAsync(int id)
         {
-            Pet pet = await repo.GetPetByIdAsync(id);
-            Mapper mapper1 = new Mapper(config2);
-            UpdatePetDto petDto = mapper1.Map<UpdatePetDto>(pet);
-            if (petDto == null)
-                return null;
-            return petDto;
-        }
             try
             {
-                Pet pet = repo.GetPetById(id);
+                Pet pet = await repo.GetPetByIdAsync(id);
                 Mapper mapper1 = new Mapper(config2);
                 UpdatePetDto petDto = mapper1.Map<UpdatePetDto>(pet);
                 if (petDto == null)
@@ -191,7 +179,7 @@ namespace PetzeyPetBusinessLayer
             }
             catch (PetDoesntExistException e) { throw e; }
         }
-
+    
 
 
 
