@@ -57,8 +57,6 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PetOwnerRepository\IPetOwnerRepository.cs" />
     <Compile Include="PetOwnerRepository\PetOwnerRepository.cs" />
-    <Compile Include="PetRepository\AsyncPetRepo.cs" />
-    <Compile Include="PetRepository\IAsyncPetRepo.cs" />
     <Compile Include="PetRepository\IPetDbRepository.cs" />
     <Compile Include="PetDbContext.cs" />
     <Compile Include="PetRepository\PetDbRepository.cs" />

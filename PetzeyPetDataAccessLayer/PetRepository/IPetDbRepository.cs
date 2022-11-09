@@ -18,5 +18,13 @@ namespace PetzeyPetDataAccessLayer
         void DeletePet(int petId);
         Pet GetPetById(int id);
 
+
+        Task<PetAndAppointments> AddAppointmentIdAsyc(PetAppDto petAppDto);
+        Task<List<UpdatePetDto>> GetAllPetsAsync();
+        Task<int> CreatePetAsync(Pet pet);
+        Task<Pet> EditPetAsync(Pet pet);
+        void DeletePetAsync(int petId);
+        Task<Pet> GetPetByIdAsync(int id);
+
     }
 }
