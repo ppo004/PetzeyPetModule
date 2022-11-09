@@ -9,23 +9,38 @@ using System.Web.Http;
 
 namespace PetzeyPetApi.Controllers
 {
+
     public class PetOwnerController : ApiController
     {
         private IPetOwnerRepository repo=new PetOwnerRepository();
-        public IHttpActionResult Post(long OwnerID, string picUrl)
+        [HttpPost]
+        [Route ("api/ProfilePic/add")]
+        public IHttpActionResult AddProfilePicture(int OwnerID, string picUrl)
         {
-            // validation
             if (!ModelState.IsValid)
                 return BadRequest("Invalid input");
+            repo.AddProfilePic(OwnerID, picUrl);
             
-            // location / status code 201 / resource
             return Ok();
         }
-        [HttpPost]
 
-        public IHttpActionResult PostOwner(PetOwner petOwner)
+       
+        [Route("api/ProfilePic/delete/{id}")]
+        public IHttpActionResult DeleteProfile(int id)
         {
-            if()
+            if (!ModelState.IsValid)
+                return BadRequest("Invalid input");
+            repo.DeleteProfilePic(id);
+            return Ok();
         }
+
+
+
+
+
+
+        //[HttpPost]
+
+
     }
 }

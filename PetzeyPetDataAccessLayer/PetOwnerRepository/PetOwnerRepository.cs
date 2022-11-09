@@ -21,11 +21,14 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
         {
             var owner = db.PetOwners.Find(petOwnerId);
             owner.ImageUrl = imageUrl;
+            db.SaveChanges();
         }
 
         public void DeleteProfilePic(int petOwnerId)
         {
-            throw new NotImplementedException();
+            var owner = db.PetOwners.Find(petOwnerId);
+            owner.ImageUrl = "No Profile";
+            db.SaveChanges();
         }
 
 
