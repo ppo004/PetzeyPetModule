@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
 using System.Web.Mvc;
+using RouteAttribute = System.Web.Http.RouteAttribute;
 
 namespace PetzeyPetApi.Controllers
 {
@@ -24,13 +25,7 @@ namespace PetzeyPetApi.Controllers
                 return BadRequest();
             return Ok(petDto);
         }
-        //public async Task<IHttpActionResult> PostPetAsync(AddPetDto pet)
-        //{
-        //    UpdatePetDto petDto = await bll.CreatePet(pet);
-        //    if (petDto == null)
-        //        return BadRequest();
-        //    return Ok(petDto);
-        //}
+
         public IHttpActionResult DeletePet(int id)
         {
             if (bll.DeletePet(id))
@@ -53,6 +48,40 @@ namespace PetzeyPetApi.Controllers
                 return NotFound();
             return Ok(petDto);
         }
+
+
+        [Route("api/Pet/Async")]
+        public async Task<IHttpActionResult> PostPetAsync(AddPetDto pet)
+        {
+            UpdatePetDto petDto = await bll.CreatePetAsync(pet);
+            if (petDto == null)
+                return BadRequest();
+            return Ok(petDto);
+        }
+        [Route("api/Pet/Async/{id}")]
+        public async Task<IHttpActionResult> DeletePetAsync(int id)
+        {
+            if (await bll.DeletePetAsync(id))
+                return Ok();
+            return BadRequest();
+        }
+        [Route("api/Pet/AsyncAdd")]
+        public async Task<IHttpActionResult> PutpetAsync(UpdatePetDto pet)
+        {
+            UpdatePetDto petDto = await bll.EditPetAsync(pet);
+            if (petDto == null)
+                return BadRequest();
+            return Ok(petDto);
+        }
+        [Route("api/Pet/Async/{id}")]
+        public async Task<IHttpActionResult> GetPetByIdAsync(int id)
+        {
+            UpdatePetDto petDto = await bll.GetPetByIdAsync(id);
+            if (petDto == null)
+                return NotFound();
+            return Ok(petDto);
+        }
+
 
     }
 }
