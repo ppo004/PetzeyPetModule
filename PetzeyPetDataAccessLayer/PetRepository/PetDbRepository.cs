@@ -57,7 +57,7 @@ namespace PetzeyPetDataAccessLayer
             return pet;
         }
 
-        public List<UpdatePetDto> GetAllPets()
+        public List<Pet> GetAllPets()
         {
             throw new NotImplementedException();
         }

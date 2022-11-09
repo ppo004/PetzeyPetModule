@@ -5,6 +5,7 @@ using PetzeyPetEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -23,7 +24,13 @@ namespace PetzeyPetApi.Controllers
                 return BadRequest();
             return Ok(petDto);
         }
-
+        //public async Task<IHttpActionResult> PostPetAsync(AddPetDto pet)
+        //{
+        //    UpdatePetDto petDto = await bll.CreatePet(pet);
+        //    if (petDto == null)
+        //        return BadRequest();
+        //    return Ok(petDto);
+        //}
         public IHttpActionResult DeletePet(int id)
         {
             if (bll.DeletePet(id))
@@ -37,8 +44,6 @@ namespace PetzeyPetApi.Controllers
             if (petDto == null)
                 return BadRequest();
             return Ok(petDto);
-
-
         }
 
         public IHttpActionResult GetPetById(int id)
