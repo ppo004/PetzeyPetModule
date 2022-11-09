@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace PetzeyPetBusinessLayer
 {
-   
+
     public class PetBll
     {
         IPetDbRepository repo = new PetDbRepository();
-        
+
         MapperConfiguration config = new MapperConfiguration(cfg =>
 
                   cfg.CreateMap<AddPetDto, Pet>().ForMember(dest => dest.AppointmentIds, act => act.Ignore())
@@ -63,7 +63,7 @@ namespace PetzeyPetBusinessLayer
 
         }
 
-       
+
         public UpdatePetDto EditPet(UpdatePetDto petDto)
         {
             Mapper mapper = new Mapper(config1);
@@ -99,7 +99,7 @@ namespace PetzeyPetBusinessLayer
         /// <summary>
         /// Async BLL Functions
         /// </summary>
-        
+
         public async Task<UpdatePetDto> CreatePetAsync(AddPetDto petDto)
         {
             Mapper mapper = new Mapper(config);
@@ -148,7 +148,17 @@ namespace PetzeyPetBusinessLayer
             return petDto;
         }
 
-    }
 
- 
+
+
+        public List<UpdatePetDto> GetAllPets()
+        {
+            Mapper mapper1 = new Mapper(config2);
+            List<UpdatePetDto> petDto = new List<UpdatePetDto>();
+            foreach (Pet pets in repo.GetAllPets())
+                petDto.Add(mapper1.Map<UpdatePetDto>(pets));
+            return petDto;
+        }
+
+    }
 }

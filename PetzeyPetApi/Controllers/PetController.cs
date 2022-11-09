@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.OData;
 using System.Web.Http.Results;
 using System.Web.Mvc;
 using RouteAttribute = System.Web.Http.RouteAttribute;
@@ -94,6 +95,14 @@ namespace PetzeyPetApi.Controllers
             return Ok(petDto);
         }
 
+
+        [System.Web.Http.HttpGet]           
+        [EnableQuery]
+        public IQueryable<UpdatePetDto> GetAllPets()
+        {
+           
+            return bll.GetAllPets().AsQueryable();
+        }
 
     }
 }
