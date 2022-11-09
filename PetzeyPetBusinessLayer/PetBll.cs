@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PetzeyPetExceptions;
+using System.Text.RegularExpressions;  
 
 namespace PetzeyPetBusinessLayer
 {
@@ -116,12 +117,14 @@ namespace PetzeyPetBusinessLayer
 
         public UpdatePetDto GetPetById(int id)
         {
-            Pet pet = repo.GetPetById(id);
+            try { Pet pet = repo.GetPetById(id);
             Mapper mapper1 = new Mapper(config2);
             UpdatePetDto petDto = mapper1.Map<UpdatePetDto>(pet);
             if (petDto == null)
                 return null;
             return petDto;
+        }
+            catch (PetDoesntExistException e) { throw e; }
         }
 
         /// <summary>
