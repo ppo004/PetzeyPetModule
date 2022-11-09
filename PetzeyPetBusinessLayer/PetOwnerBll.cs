@@ -10,9 +10,13 @@ using System.Threading.Tasks;
 
 namespace PetzeyPetBusinessLayer
 {
-    public class PetOwnerBll
+    public class PetOwnerBll:IPetOwnerBll
     {
-        IPetOwnerRepository repo = new PetOwnerRepository();
+        IPetOwnerRepository repo;
+        public PetOwnerBll()
+        {
+            repo = new PetOwnerRepository();
+        }
         MapperConfiguration addOwnerConfig = new MapperConfiguration(cfg =>
 
                    cfg.CreateMap<AddOwnerDto, PetOwner>().ForMember(dest => dest.PetOwnerId, act => act.Ignore())

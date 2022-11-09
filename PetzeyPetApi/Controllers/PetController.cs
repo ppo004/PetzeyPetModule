@@ -18,8 +18,14 @@ namespace PetzeyPetApi.Controllers
 {
     public class PetController : ApiController
     {
-        PetBll bll = new PetBll();
-        ILog log = log4net.LogManager.GetLogger(typeof(PetController));
+        IPetBll bll;
+        ILog log;
+        public PetController(IPetBll bll)
+        {
+            this.bll = bll;
+            this.log = log4net.LogManager.GetLogger(typeof(PetController));
+        }
+        
 
         [Route("api/Pet/AddAppointment")]
         public IHttpActionResult AddAppointmentTopet(PetAppDto petAppDto)

@@ -59,6 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPetBll.cs" />
+    <Compile Include="IPetOwnerBll.cs" />
     <Compile Include="PetBll.cs" />
     <Compile Include="PetOwnerBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

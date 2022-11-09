@@ -15,8 +15,12 @@ namespace PetzeyPetApi.Controllers
     public class PetOwnerController : ApiController
     {
         
-        PetOwnerBll ownerbll=new PetOwnerBll();
-       
+
+        IPetOwnerBll ownerbll;
+        public PetOwnerController(IPetOwnerBll ownerbll)
+        {
+            this.ownerbll = ownerbll;
+        }
 
         [Route("api/addOwner")]
         public IHttpActionResult PostOwner(AddOwnerDto petOwner)

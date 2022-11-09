@@ -12,9 +12,13 @@ using PetzeyPetExceptions;
 namespace PetzeyPetBusinessLayer
 {
 
-    public class PetBll
+    public class PetBll:IPetBll
     {
-        IPetDbRepository repo = new PetDbRepository();
+        IPetDbRepository repo;
+        public PetBll()
+        {
+            this.repo = new PetDbRepository();
+        }
 
         MapperConfiguration config = new MapperConfiguration(cfg =>
 
