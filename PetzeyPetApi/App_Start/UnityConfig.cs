@@ -41,7 +41,7 @@ namespace PetzeyPetApi
             // container.LoadConfiguration();
 
             // TODO: Register your type's mappings here.
-            // container.RegisterType<IProductRepository, ProductRepository>();
+            //container.RegisterType<IPet, ProductRepository>();
         }
     }
 }
