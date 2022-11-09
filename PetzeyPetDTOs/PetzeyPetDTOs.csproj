@@ -54,6 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddImgUrlDto.cs" />
+    <Compile Include="AddOwnerDto.cs" />
+    <Compile Include="EditOwnerDto.cs" />
     <Compile Include="PetAppDto.cs" />
     <Compile Include="AddPetDto.cs" />
     <Compile Include="UpdatePetDto.cs" />
