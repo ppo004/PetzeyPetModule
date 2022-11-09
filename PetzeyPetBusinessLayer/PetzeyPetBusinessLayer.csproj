@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PetBll.cs" />
+    <Compile Include="PetBllAsync.cs" />
     <Compile Include="PetOwnerBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

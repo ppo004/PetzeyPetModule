@@ -51,6 +51,17 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
             throw new NotImplementedException();
         }
 
+        public void DeletePetInOwner(int petId,int ownerId)
+        {
+          // List<OwnerHasPet> ownerHasPets = db.OwnerHasPets.Where(p => p.PetId == petId).ToList();
+            PetOwner owner = db.PetOwners.Find(ownerId);
+            OwnerHasPet o = owner.PetIds.ToList().Where(p => p.PetId == petId).FirstOrDefault();
+            owner.PetIds.RemoveAll(p=>p.PetId == petId);
+            db.OwnerHasPets.Remove(o);
+            db.SaveChanges();
+
+        }
+
         public PetOwner getOwnerById(int petOwnerId)
         {
             return db.PetOwners.Find(petOwnerId);
