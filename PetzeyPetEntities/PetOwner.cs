@@ -21,6 +21,6 @@ namespace PetzeyPetEntities
         public string OwnerLocation { get; set; }
         [Required]
         public string ImageUrl { get; set; }
-        public List<OwnerHasPet> PetIds { get; set; }
+        public virtual List<OwnerHasPet> PetIds { get; set; }
     }
 }
