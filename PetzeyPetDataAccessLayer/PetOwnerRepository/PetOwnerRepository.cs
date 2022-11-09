@@ -26,7 +26,8 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
 
         public void DeleteProfilePic(int petOwnerId)
         {
-            throw new NotImplementedException();
+            db.PetOwners.Find(petOwnerId).ImageUrl = "Dummy Profile Pic";
+            db.SaveChanges();
         }
 
 

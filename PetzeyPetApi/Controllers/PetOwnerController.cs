@@ -1,4 +1,5 @@
 ﻿using PetzeyPetDataAccessLayer.PetOwnerRepository;
+using PetzeyPetDTOs;
 using PetzeyPetEntities;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace PetzeyPetApi.Controllers
             return Ok();
         }
 */
+
         [Route("api/addOwner")]
         public IHttpActionResult PostOwner(PetOwner petOwner)
         {
@@ -37,6 +39,12 @@ namespace PetzeyPetApi.Controllers
         public IHttpActionResult Put(PetOwner petOwner)
         {
             repo.EditOwner(petOwner);
+            return Ok();
+        }
+        [HttpPut]
+        public IHttpActionResult AddProfilePic(AddImgUrlDto imgUrlDto)
+        {
+
             return Ok();
         }
     }
