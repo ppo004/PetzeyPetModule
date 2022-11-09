@@ -59,7 +59,7 @@ namespace PetzeyPetDataAccessLayer
 
         public List<Pet> GetAllPets()
         {
-            throw new NotImplementedException();
+            return db.Pets.ToList();
         }
 
         public Pet GetPetById(int id)

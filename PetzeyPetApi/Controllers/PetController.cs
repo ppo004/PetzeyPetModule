@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.OData;
 using System.Web.Http.Results;
 using System.Web.Mvc;
 
@@ -52,6 +53,14 @@ namespace PetzeyPetApi.Controllers
             if (petDto == null)
                 return NotFound();
             return Ok(petDto);
+        }
+
+        [System.Web.Http.HttpGet]           
+        [EnableQuery]
+        public IQueryable<UpdatePetDto> GetAllPets()
+        {
+           
+            return bll.GetAllPets().AsQueryable();
         }
 
     }

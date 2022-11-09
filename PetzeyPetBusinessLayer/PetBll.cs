@@ -80,5 +80,14 @@ namespace PetzeyPetBusinessLayer
             return petDto;
         }
 
+        public List<UpdatePetDto> GetAllPets()
+        {
+            Mapper mapper1 = new Mapper(config2);
+            List<UpdatePetDto> petDto = new List<UpdatePetDto>();
+            foreach (Pet pets in repo.GetAllPets())
+                petDto.Add(mapper1.Map<UpdatePetDto>(pets));
+            return petDto;
+        }
+
     }
 }
