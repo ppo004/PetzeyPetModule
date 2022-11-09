@@ -20,7 +20,15 @@ namespace PetzeyPetApi.Controllers
     {
         PetBll bll = new PetBll();
         ILog log = log4net.LogManager.GetLogger(typeof(PetController));
-        
+
+        [Route("api/Pet/AddAppointment")]
+        public IHttpActionResult AddAppointmentTopet(PetAppDto petAppDto)
+        {
+            if (bll.AddAppointmentsToPet(petAppDto))
+                return Ok(petAppDto);
+            return BadRequest();
+        }
+
         public IHttpActionResult PostPet(AddPetDto pet)
         {
             //log.Debug("Hello there debug");
@@ -30,11 +38,12 @@ namespace PetzeyPetApi.Controllers
             return Ok(petDto);
         }
 
+
         public IHttpActionResult DeletePet(int id)
         {
             if (bll.DeletePet(id))
                 return Ok();
-            return BadRequest();
+            return BadRequest("Deletion unsuccessful");
         }
 
         public IHttpActionResult Putpet(UpdatePetDto pet)

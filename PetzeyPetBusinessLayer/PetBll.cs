@@ -30,10 +30,23 @@ namespace PetzeyPetBusinessLayer
                  cfg.CreateMap<Pet, UpdatePetDto>()
 
              );
+       
+/// <summary>
+/// BLL Functions
+/// </summary>
+/// 
 
-        /// <summary>
-        /// BLL Functions
-        /// </summary>
+         
+        public bool AddAppointmentsToPet(PetAppDto petAppdto)
+        {
+          int id= repo.AddAppointmentId(petAppdto.petId, petAppdto.AppointmentId);
+          PetAndAppointments appointment = repo.GetPetandAppById(id);
+            if (appointment == null)
+                return false;
+            return true;
+            
+        }
+
 
         public UpdatePetDto CreatePet(AddPetDto petDto)
         {
