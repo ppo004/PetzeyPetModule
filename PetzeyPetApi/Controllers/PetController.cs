@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using log4net;
 using PetzeyPetBusinessLayer;
 using PetzeyPetDTOs;
 using PetzeyPetEntities;
@@ -17,9 +18,11 @@ namespace PetzeyPetApi.Controllers
     public class PetController : ApiController
     {
         PetBll bll = new PetBll();
-
+        ILog log = log4net.LogManager.GetLogger(typeof(PetController));
+        
         public IHttpActionResult PostPet(AddPetDto pet)
         {
+            //log.Debug("Hello there debug");
             UpdatePetDto petDto = bll.CreatePet(pet);
             if (petDto == null)
                 return BadRequest();
