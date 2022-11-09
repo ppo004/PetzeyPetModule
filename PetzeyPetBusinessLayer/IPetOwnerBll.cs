@@ -10,11 +10,17 @@ namespace PetzeyPetBusinessLayer
 {
     public interface IPetOwnerBll
     {
-        EditOwnerDto CreateOwner(AddOwnerDto ownerDto);
-        EditOwnerDto EditOwner(EditOwnerDto ownerDto);
-        EditOwnerDto GetOwnerById(int id);
+        OwnerDto CreateOwner(AddOwnerDto ownerDto);
+        Task<OwnerDto> CreateOwnerAsync(AddOwnerDto ownerDto);
+
+        OwnerDto EditOwner(OwnerDto ownerDto);
+        Task<OwnerDto> EditOwnerAsync(OwnerDto ownerDto);
+        OwnerDto GetOwnerById(int id);
+        Task<OwnerDto> GetOwnerByIdAsync(int id);
         PetOwner AddOwnerProfilePic(AddProfilePicDto dto);
-        List<EditOwnerDto> GetAllOwners();
-        PetOwner deleteOwnerProfilePic(int id);
+        Task<PetOwner> AddOwnerProfilePicAsync(AddProfilePicDto dto);
+        List<OwnerDto> GetAllOwners();
+        PetOwner DeleteOwnerProfilePic(int id);
+        Task<PetOwner> DeleteOwnerProfilePicAsync(int id);
     }
 }

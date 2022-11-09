@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using PetzeyPetExceptions;
 namespace PetzeyPetDataAccessLayer.PetOwnerRepository
 {
     public class PetOwnerRepository: IPetOwnerRepository
@@ -29,10 +29,15 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
 
         public PetOwner DeleteProfilePic(int petOwnerId)
         {
-            var owner = db.PetOwners.Find(petOwnerId);
-            owner.ImageUrl = "shorturl.at/tJUZ3";
-            db.SaveChanges();
-            return owner;
+            try
+            {
+                var owner = db.PetOwners.Find(petOwnerId);
+                if (owner == null) throw new OwnerDoesntExistException();
+                owner.ImageUrl = "shorturl.at/tJUZ3";
+                db.SaveChanges();
+                return owner;
+            }
+            catch(OwnerDoesntExistException e) { throw e; }
         }
 
 
@@ -93,10 +98,15 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
 
         public async Task<PetOwner> AddProfilePicAsync(int petOwnerId, string imageUrl)
         {
-            var owner = db.PetOwners.Find(petOwnerId);
-            owner.ImageUrl = imageUrl;
-            await db.SaveChangesAsync();
-            return owner;
+            try
+            {
+                var owner = db.PetOwners.Find(petOwnerId);
+                if (owner == null) throw new OwnerDoesntExistException();
+                owner.ImageUrl = imageUrl;
+                await db.SaveChangesAsync();
+                return owner;
+            }
+            catch(OwnerDoesntExistException e) { throw e; }
         }
 
         public async Task<PetOwner> DeleteProfilePicAsync(int petOwnerId)

@@ -62,7 +62,7 @@
     <Compile Include="AddImgUrlDto.cs" />
     <Compile Include="AddOwnerDto.cs" />
     <Compile Include="AddProfilePicDto.cs" />
-    <Compile Include="EditOwnerDto.cs" />
+    <Compile Include="OwnerDto.cs" />
     <Compile Include="PetAppDto.cs" />
     <Compile Include="AddPetDto.cs" />
     <Compile Include="UpdatePetDto.cs" />
