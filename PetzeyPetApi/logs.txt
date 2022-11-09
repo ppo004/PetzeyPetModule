@@ -1,0 +1,4 @@
+2022-11-09 13:24:01,040 WARN  PetzeyPetApi.Controllers.PetController.PostPet [24] - MESSAGE: Hello there
+2022-11-09 13:57:28,461 WARN  PetzeyPetApi.Controllers.PetController.PostPet [24] - MESSAGE: Hello there
+2022-11-09 13:58:28,131 WARN  PetzeyPetApi.Controllers.PetController.PostPet [24] - MESSAGE: Hello there  warn
+2022-11-09 13:58:28,172 DEBUG PetzeyPetApi.Controllers.PetController.PostPet [25] - MESSAGE: Hello there in debug
