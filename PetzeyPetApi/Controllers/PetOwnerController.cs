@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.OData;
 
 namespace PetzeyPetApi.Controllers
 {
@@ -59,6 +60,14 @@ namespace PetzeyPetApi.Controllers
             PetOwner owner = ownerbll.deleteOwnerProfilePic(ownerID);
             if (owner == null) return BadRequest();
             else return Ok(owner);
+        }
+
+        [System.Web.Http.HttpGet]
+        [EnableQuery]
+        public IQueryable<EditOwnerDto> GetAllPets()
+        {
+
+            return ownerbll.GetAllOwners().AsQueryable();
         }
     }
 }

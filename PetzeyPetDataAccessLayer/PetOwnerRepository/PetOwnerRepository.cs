@@ -64,5 +64,10 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
         {
             return db.PetOwners.Find(petOwnerId);
         }
+
+        public List<PetOwner> GetAllOwners()
+        {
+            return db.PetOwners.ToList();
+        }
     }
 }

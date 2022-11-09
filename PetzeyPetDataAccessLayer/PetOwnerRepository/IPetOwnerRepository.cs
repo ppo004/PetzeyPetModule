@@ -18,5 +18,7 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
 
         PetOwner getOwnerById (int petOwnerId);
 
+        List<PetOwner> GetAllOwners();
+
     }
 }

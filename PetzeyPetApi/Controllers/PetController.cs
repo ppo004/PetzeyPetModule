@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.OData;
 using System.Web.Http.Results;
 using System.Web.Mvc;
 using RouteAttribute = System.Web.Http.RouteAttribute;
@@ -19,7 +20,15 @@ namespace PetzeyPetApi.Controllers
     {
         PetBll bll = new PetBll();
         ILog log = log4net.LogManager.GetLogger(typeof(PetController));
-        
+
+        [Route("api/Pet/AddAppointment")]
+        public IHttpActionResult AddAppointmentTopet(PetAppDto petAppDto)
+        {
+            if (bll.AddAppointmentsToPet(petAppDto))
+                return Ok(petAppDto);
+            return BadRequest();
+        }
+
         public IHttpActionResult PostPet(AddPetDto pet)
         {
             //log.Debug("Hello there debug");
@@ -29,11 +38,12 @@ namespace PetzeyPetApi.Controllers
             return Ok(petDto);
         }
 
+
         public IHttpActionResult DeletePet(int id)
         {
             if (bll.DeletePet(id))
                 return Ok();
-            return BadRequest();
+            return BadRequest("Deletion unsuccessful");
         }
 
         public IHttpActionResult Putpet(UpdatePetDto pet)
@@ -85,6 +95,14 @@ namespace PetzeyPetApi.Controllers
             return Ok(petDto);
         }
 
+
+        [System.Web.Http.HttpGet]           
+        [EnableQuery]
+        public IQueryable<UpdatePetDto> GetAllPets()
+        {
+           
+            return bll.GetAllPets().AsQueryable();
+        }
 
     }
 }
