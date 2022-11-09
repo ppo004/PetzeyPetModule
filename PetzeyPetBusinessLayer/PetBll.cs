@@ -10,9 +10,11 @@ using System.Threading.Tasks;
 
 namespace PetzeyPetBusinessLayer
 {
+   
     public class PetBll
     {
         IPetDbRepository repo = new PetDbRepository();
+        
         MapperConfiguration config = new MapperConfiguration(cfg =>
 
                   cfg.CreateMap<AddPetDto, Pet>().ForMember(dest => dest.AppointmentIds, act => act.Ignore())
@@ -28,11 +30,14 @@ namespace PetzeyPetBusinessLayer
                  cfg.CreateMap<Pet, UpdatePetDto>()
 
              );
+       
 
         public UpdatePetDto CreatePet(AddPetDto petDto)
         {
             Mapper mapper = new Mapper(config);
             Pet pet = mapper.Map<Pet>(petDto);
+          
+
             int id = repo.CreatePet(pet);
             Pet pet1 = repo.GetPetById(id);
 
@@ -41,6 +46,8 @@ namespace PetzeyPetBusinessLayer
             return petDto1;
 
         }
+
+       
         public UpdatePetDto EditPet(UpdatePetDto petDto)
         {
             Mapper mapper = new Mapper(config1);
