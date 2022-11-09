@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.OData;
 
@@ -73,5 +74,56 @@ namespace PetzeyPetApi.Controllers
 
             return ownerbll.GetAllOwners().AsQueryable();
         }
+
+
+
+        ///<summary>
+        /// Async
+        /// </summary>
+
+        [Route("api/addOwner/Async")]
+        public async Task<IHttpActionResult> PostOwnerAsync(AddOwnerDto petOwner)
+        {
+            EditOwnerDto ownerDto = await ownerbll.CreateOwnerAsync(petOwner);
+
+            if (ownerDto == null)
+            {
+                return BadRequest();
+            }
+            else return Ok(ownerDto);
+        }
+
+        [Route("api/editOwner/Async")]
+        public async Task<IHttpActionResult> PutAsync(EditOwnerDto petOwner)
+        {
+            await ownerbll.EditOwnerAsync(petOwner);
+            return Ok(petOwner);
+        }
+
+        public async Task<IHttpActionResult> GetAsync(int id)
+        {
+            EditOwnerDto ownerDto = await ownerbll.GetOwnerByIdAsync(id);
+            if (ownerDto == null)
+                return NotFound();
+            return Ok(ownerDto);
+        }
+        [HttpPut]
+        [Route("api/addProfilePic/Async")]
+        public async Task<IHttpActionResult> AddProfilePicAsync(AddProfilePicDto dto)
+        {
+            PetOwner owner = await ownerbll.AddOwnerProfilePicAsync(dto);
+            if (owner == null) return BadRequest();
+            else return Ok(owner);
+        }
+
+        [HttpPut]
+        [Route("api/deleteProfilePic/Async/{ownerID}")]
+        public async Task<IHttpActionResult> deleteProfilePicAsync(int ownerID)
+        {
+            PetOwner owner = await ownerbll.deleteOwnerProfilePicAsync(ownerID);
+            if (owner == null) return BadRequest();
+            else return Ok(owner);
+        }
+
     }
 }

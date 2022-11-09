@@ -44,11 +44,7 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
             return petOwner;
         }
 
-        public List<string> GetOwnerNames()
-        {
-            throw new NotImplementedException();
-        }
-
+    
         public void DeletePetInOwner(int petId,int ownerId)
         {
           // List<OwnerHasPet> ownerHasPets = db.OwnerHasPets.Where(p => p.PetId == petId).ToList();
@@ -69,5 +65,65 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
         {
             return db.PetOwners.ToList();
         }
+
+
+
+        /// <summary>
+        /// Async Funs
+        /// </summary>
+        ///
+
+
+
+        public async Task<int> CreateOwnerAsync(PetOwner petOwner)
+        {
+            db.PetOwners.Add(petOwner);
+            await db.SaveChangesAsync();
+            return petOwner.PetOwnerId;
+        }
+
+        public async Task<PetOwner> EditOwnerAsync(PetOwner petOwner)
+        {
+            db.Entry(petOwner).State = System.Data.Entity.EntityState.Modified;
+            await db.SaveChangesAsync();
+            return petOwner; 
+        }
+
+    
+
+        public async Task<PetOwner> AddProfilePicAsync(int petOwnerId, string imageUrl)
+        {
+            var owner = db.PetOwners.Find(petOwnerId);
+            owner.ImageUrl = imageUrl;
+            await db.SaveChangesAsync();
+            return owner;
+        }
+
+        public async Task<PetOwner> DeleteProfilePicAsync(int petOwnerId)
+        {
+            var owner = db.PetOwners.Find(petOwnerId);
+            owner.ImageUrl = "shorturl.at/tJUZ3";
+            await db.SaveChangesAsync();
+            return owner;
+        }
+
+        public async void DeletePetInOwnerAsync(int petId, int ownerId)
+        {
+            PetOwner owner = db.PetOwners.Find(ownerId);
+            OwnerHasPet o = owner.PetIds.ToList().Where(p => p.PetId == petId).FirstOrDefault();
+            owner.PetIds.RemoveAll(p => p.PetId == petId);
+            db.OwnerHasPets.Remove(o);
+            await db.SaveChangesAsync();
+        }
+
+        public async Task<PetOwner> getOwnerByIdAsync(int petOwnerId)
+        {
+            return await db.PetOwners.FindAsync(petOwnerId);
+        }
+
+     
+
+       
+
     }
 }
