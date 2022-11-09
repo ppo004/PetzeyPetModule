@@ -30,16 +30,18 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
         }
 
 
-        public bool EditOwner(PetOwner petOwner)
+        public void EditOwner(PetOwner petOwner)
         {
-            var ownernew = db.PetOwners.Find(petOwner.PetOwnerId);
+            /*var ownernew = db.PetOwners.Find(petOwner.PetOwnerId);
             if (ownernew != null)
             {
                 db.Entry(petOwner).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 return true;
             }
-            return false;
+            return false;*/
+            db.Entry(petOwner).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
         }
 
         public List<string> GetOwnerNames()

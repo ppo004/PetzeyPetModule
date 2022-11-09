@@ -12,7 +12,7 @@ namespace PetzeyPetApi.Controllers
     public class PetOwnerController : ApiController
     {
         private IPetOwnerRepository repo=new PetOwnerRepository();
-        [HttpPost]
+        /*[HttpPost]
         [Route("api/add")]
         public IHttpActionResult Add(long OwnerID, string picUrl)
         {
@@ -23,9 +23,9 @@ namespace PetzeyPetApi.Controllers
             // location / status code 201 / resource
             return Ok();
         }
-
-
-        public IHttpActionResult Post(PetOwner petOwner)
+*/
+        [Route("api/addOwner")]
+        public IHttpActionResult PostOwner(PetOwner petOwner)
         {
             if (repo.CreateOwner(petOwner))
             {
@@ -33,16 +33,11 @@ namespace PetzeyPetApi.Controllers
             }
             else return BadRequest();
         }
+        [Route("api/editOwner")]
         public IHttpActionResult Put(PetOwner petOwner)
         {
-            if (repo.EditOwner(petOwner) && ModelState.IsValid)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest();
-            }
+            repo.EditOwner(petOwner);
+            return Ok();
         }
     }
 }
