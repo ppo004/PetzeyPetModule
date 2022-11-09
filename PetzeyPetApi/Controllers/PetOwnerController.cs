@@ -13,20 +13,9 @@ namespace PetzeyPetApi.Controllers
 {
     public class PetOwnerController : ApiController
     {
-        //private IPetOwnerRepository repo=new PetOwnerRepository();
+        
         PetOwnerBll ownerbll=new PetOwnerBll();
-        /*[HttpPost]
-        [Route("api/add")]
-        public IHttpActionResult Add(long OwnerID, string picUrl)
-        {
-            // validation
-            if (!ModelState.IsValid)
-                return BadRequest("Invalid input");
-
-            // location / status code 201 / resource
-            return Ok();
-        }
-*/
+       
 
         [Route("api/addOwner")]
         public IHttpActionResult PostOwner(AddOwnerDto petOwner)
@@ -39,12 +28,14 @@ namespace PetzeyPetApi.Controllers
             }
             else return Ok(ownerDto);
         }
-        /*[Route("api/editOwner")]
-        public IHttpActionResult Put(PetOwner petOwner)
+
+        [Route("api/editOwner")]
+        public IHttpActionResult Put(EditOwnerDto petOwner)
         {
-            repo.EditOwner(petOwner);
-            return Ok();
-        }*/
+            ownerbll.EditOwner(petOwner);
+            return Ok(petOwner);
+        }
+
         public IHttpActionResult Get(int id)
         {
             EditOwnerDto ownerDto = ownerbll.GetOwnerById(id);
@@ -53,10 +44,21 @@ namespace PetzeyPetApi.Controllers
             return Ok(ownerDto);
         }
         [HttpPut]
-        public IHttpActionResult AddProfilePic(AddImgUrlDto imgUrlDto)
+        [Route("api/addProfilePic/{ownerID}/{imgUrl}")]
+        public IHttpActionResult AddProfilePic(int ownerID, string imgUrl)
         {
+            PetOwner owner = ownerbll.AddOwnerProfilePic(ownerID, imgUrl);
+            if (owner == null) return BadRequest(); 
+            else return Ok(owner);
+        }
 
-            return Ok();
+        [HttpPut]
+        [Route("api/deleteProfilePic/{ownerID}")]
+        public IHttpActionResult deleteProfilePic(int ownerID)
+        {
+            PetOwner owner = ownerbll.deleteOwnerProfilePic(ownerID);
+            if (owner == null) return BadRequest();
+            else return Ok(owner);
         }
     }
 }
