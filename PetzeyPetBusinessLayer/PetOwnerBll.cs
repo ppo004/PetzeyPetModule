@@ -72,11 +72,11 @@ namespace PetzeyPetBusinessLayer
             return ownerDto;
         }
 
-        public PetOwner AddOwnerProfilePic(int id, string url)
+        public PetOwner AddOwnerProfilePic(AddProfilePicDto dto)
         {
-            repo.AddProfilePic(id, url);
+            repo.AddProfilePic(dto.OwnerId, dto.imageUrl);
 
-            return repo.getOwnerById(id);
+            return repo.getOwnerById(dto.OwnerId);
         }
 
         public List<EditOwnerDto> GetAllOwners()

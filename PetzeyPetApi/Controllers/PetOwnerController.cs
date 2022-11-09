@@ -45,10 +45,10 @@ namespace PetzeyPetApi.Controllers
             return Ok(ownerDto);
         }
         [HttpPut]
-        [Route("api/addProfilePic/{ownerID}/{imgUrl}")]
-        public IHttpActionResult AddProfilePic(int ownerID, string imgUrl)
+        [Route("api/addProfilePic")]
+        public IHttpActionResult AddProfilePic(AddProfilePicDto dto)
         {
-            PetOwner owner = ownerbll.AddOwnerProfilePic(ownerID, imgUrl);
+            PetOwner owner = ownerbll.AddOwnerProfilePic(dto);
             if (owner == null) return BadRequest(); 
             else return Ok(owner);
         }
