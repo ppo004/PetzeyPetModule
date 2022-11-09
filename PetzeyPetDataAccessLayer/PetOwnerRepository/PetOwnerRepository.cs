@@ -19,28 +19,26 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
             return petOwner.PetOwnerId;
         }
 
-        public void AddProfilePic(int petOwnerId, string imageUrl)
+        public PetOwner AddProfilePic(int petOwnerId, string imageUrl)
         {
             var owner = db.PetOwners.Find(petOwnerId);
             owner.ImageUrl = imageUrl;
+            db.SaveChanges();
+            return owner;
         }
 
-        public void DeleteProfilePic(int petOwnerId)
+        public PetOwner DeleteProfilePic(int petOwnerId)
         {
-            throw new NotImplementedException();
+            var owner = db.PetOwners.Find(petOwnerId);
+            owner.ImageUrl = "shorturl.at/tJUZ3";
+            db.SaveChanges();
+            return owner;
         }
 
 
         public PetOwner EditOwner(PetOwner petOwner)
         {
-            /*var ownernew = db.PetOwners.Find(petOwner.PetOwnerId);
-            if (ownernew != null)
-            {
-                db.Entry(petOwner).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
-                return true;
-            }
-            return false;*/
+            
             db.Entry(petOwner).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
             return petOwner;

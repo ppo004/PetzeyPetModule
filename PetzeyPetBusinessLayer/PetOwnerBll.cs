@@ -29,6 +29,9 @@ namespace PetzeyPetBusinessLayer
 
              );
 
+       
+
+
         public EditOwnerDto CreateOwner(AddOwnerDto ownerDto)
         {
             Mapper mapper = new Mapper(addOwnerConfig);
@@ -36,7 +39,7 @@ namespace PetzeyPetBusinessLayer
 
 
             int id = repo.CreateOwner(owner);
-           
+
             PetOwner owner1 = repo.getOwnerById(id);
 
             Mapper mapper1 = new Mapper(editOwnerConfig2);
@@ -69,6 +72,13 @@ namespace PetzeyPetBusinessLayer
             return ownerDto;
         }
 
+        public PetOwner AddOwnerProfilePic(int id, string url)
+        {
+            repo.AddProfilePic(id, url);
+
+            return repo.getOwnerById(id);
+        }
+
         public List<EditOwnerDto> GetAllOwners()
         {
             Mapper mapper1 = new Mapper(editOwnerConfig2);
@@ -78,5 +88,11 @@ namespace PetzeyPetBusinessLayer
             return petOwnerDto;
         }
 
+        public PetOwner deleteOwnerProfilePic(int id)
+        {
+            repo.DeleteProfilePic(id);
+
+            return repo.getOwnerById(id);
+        }
     }
 }
