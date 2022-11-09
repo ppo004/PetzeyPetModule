@@ -11,22 +11,18 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
     {
         int CreateOwner(PetOwner petOwner);
         PetOwner EditOwner(PetOwner petOwner);
+        List<string> GetOwnerNames();
         PetOwner AddProfilePic(int petOwnerId, string imageUrl);
         PetOwner DeleteProfilePic(int petOwnerId);
         void DeletePetInOwner(int petId, int ownerId);
+
         PetOwner getOwnerById (int petOwnerId);
+
         List<PetOwner> GetAllOwners();
-
-
-        // Async
-        Task<int> CreateOwnerAsync(PetOwner petOwner);
-        Task<PetOwner> EditOwnerAsync(PetOwner petOwner);
-        Task<PetOwner> AddProfilePicAsync(int petOwnerId, string imageUrl);
-        Task<PetOwner> DeleteProfilePicAsync(int petOwnerId);
-        void DeletePetInOwnerAsync(int petId, int ownerId);
-        Task<PetOwner> getOwnerByIdAsync(int petOwnerId);
-
-      
-
+        Task DeleteProfilePicAsync(int id);
+        Task<PetOwner> getOwnerByIdAsync(int id);
+        Task AddProfilePicAsync(int ownerId, string imageUrl);
+        Task<PetOwner> EditOwnerAsync(PetOwner owner);
+        Task<int> CreateOwnerAsync(PetOwner owner);
     }
 }
