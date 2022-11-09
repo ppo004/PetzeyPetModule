@@ -69,5 +69,14 @@ namespace PetzeyPetBusinessLayer
             return ownerDto;
         }
 
+        public List<EditOwnerDto> GetAllOwners()
+        {
+            Mapper mapper1 = new Mapper(editOwnerConfig2);
+            List<EditOwnerDto> petOwnerDto = new List<EditOwnerDto>();
+            foreach (PetOwner petOwner in repo.GetAllOwners())
+                petOwnerDto.Add(mapper1.Map<EditOwnerDto>(petOwner));
+            return petOwnerDto;
+        }
+
     }
 }
