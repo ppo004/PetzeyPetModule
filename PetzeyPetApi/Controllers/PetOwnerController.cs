@@ -1,4 +1,6 @@
-﻿using PetzeyPetDataAccessLayer.PetOwnerRepository;
+﻿using PetzeyPetBusinessLayer;
+using PetzeyPetDataAccessLayer.PetOwnerRepository;
+using PetzeyPetDTOs;
 using PetzeyPetEntities;
 using System;
 using System.Collections.Generic;
@@ -11,8 +13,9 @@ namespace PetzeyPetApi.Controllers
 {
     public class PetOwnerController : ApiController
     {
-        private IPetOwnerRepository repo=new PetOwnerRepository();
-        [HttpPost]
+        //private IPetOwnerRepository repo=new PetOwnerRepository();
+        PetOwnerBll ownerbll=new PetOwnerBll();
+        /*[HttpPost]
         [Route("api/add")]
         public IHttpActionResult Add(long OwnerID, string picUrl)
         {
@@ -23,26 +26,30 @@ namespace PetzeyPetApi.Controllers
             // location / status code 201 / resource
             return Ok();
         }
-
-
-        public IHttpActionResult Post(PetOwner petOwner)
+*/
+        [Route("api/addOwner")]
+        public IHttpActionResult PostOwner(AddOwnerDto petOwner)
         {
-            if (repo.CreateOwner(petOwner))
-            {
-                return Ok();
-            }
-            else return BadRequest();
-        }
-        public IHttpActionResult Put(PetOwner petOwner)
-        {
-            if (repo.EditOwner(petOwner) && ModelState.IsValid)
-            {
-                return Ok();
-            }
-            else
+           EditOwnerDto ownerDto = ownerbll.CreateOwner(petOwner);
+            
+           if (ownerDto==null)
             {
                 return BadRequest();
             }
+            else return Ok(ownerDto);
+        }
+        /*[Route("api/editOwner")]
+        public IHttpActionResult Put(PetOwner petOwner)
+        {
+            repo.EditOwner(petOwner);
+            return Ok();
+        }*/
+        public IHttpActionResult Get(int id)
+        {
+            EditOwnerDto ownerDto = ownerbll.GetOwnerById(id);
+            if (ownerDto == null)
+                return NotFound();
+            return Ok(ownerDto);
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.SqlServer.Server;
 using System.Data.Common;
 using System.Data.Entity;
+using PetzeyPetDataAccessLayer.PetOwnerRepository;
 
 namespace PetzeyPetDataAccessLayer
 {
@@ -16,18 +17,27 @@ namespace PetzeyPetDataAccessLayer
     {
         
         PetDbContext db = new PetDbContext();
-       
-        public PetAndAppointments AddAppointmentId(PetAppDto petAppDto)
+        IPetOwnerRepository ownerRepo = new PetOwnerRepository.PetOwnerRepository();
+
+/// <summary>
+/// Repo Functions
+/// </summary>
+
+        public int AddAppointmentId(int petId, int appId)
         {
-            PetAndAppointments petAppointment = new PetAndAppointments();
-            petAppointment.AppointmentId = petAppDto.AppointmentId;
-            db.PetAndAppointments.Add(petAppointment);
-            db.SaveChanges();
+            PetAndAppointments appointment = new PetAndAppointments();
+            Pet pet = db.Pets.Find(petId);
+            appointment.AppointmentId = appId;
+            if (pet.AppointmentIds == null)
+                pet.AppointmentIds = new List<PetAndAppointments>() { appointment };
+            else
+                pet.AppointmentIds.Add(appointment);
             
-            Pet pet = db.Pets.Find(petAppDto.petId);
-            pet.AppointmentIds.Add(petAppointment);
+            
             db.Entry(pet).State = EntityState.Modified;
-            return petAppointment;
+            db.SaveChanges();
+            return appointment.PetAppId;
+            
 
         }
 
@@ -35,36 +45,127 @@ namespace PetzeyPetDataAccessLayer
         {
             db.Pets.Add(pet);
             db.SaveChanges();
+
+            PetOwner owner = db.PetOwners.Find(pet.OwnerId);
+            OwnerHasPet ownerHasPet = new OwnerHasPet();
+            ownerHasPet.PetId = pet.PetId;
+            if (owner.PetIds == null)
+                owner.PetIds = new List<OwnerHasPet>() { ownerHasPet };
+            else
+                owner.PetIds.Add(ownerHasPet);
+
+            db.SaveChanges();
+
             return pet.PetId;
+
         }
 
     
 
         public void DeletePet(int petId)
         {
+            Pet pet = db.Pets.Find(petId);
+            ownerRepo.DeletePetInOwner(petId, pet.OwnerId);
             db.Pets.Remove(db.Pets.Find(petId));
             db.SaveChanges();
 
         }
 
         public Pet EditPet(Pet pet)
-        {
-            
-           
+        {           
             db.Entry(pet).State = EntityState.Modified;
-
-            db.SaveChanges();
+            
             return pet;
         }
 
         public List<Pet> GetAllPets()
         {
-            throw new NotImplementedException();
+            return db.Pets.ToList();
         }
 
         public Pet GetPetById(int id)
         {
             return db.Pets.Find(id);
+        }
+
+        public PetAndAppointments GetPetandAppById(int petAppId)
+        {
+            PetAndAppointments appointment = db.PetAndAppointments.Find(petAppId);
+            return appointment;
+        }
+
+        /// <summary>
+        /// Async Repo Functions
+        /// </summary>
+
+
+        public async Task<int> AddAppointmentIdAsyc(int appId, int petId)
+        {
+            PetAndAppointments appointment = new PetAndAppointments();
+            Pet pet = await db.Pets.FindAsync(petId);
+            appointment.AppointmentId = appId;
+            if (pet.AppointmentIds == null)
+                pet.AppointmentIds = new List<PetAndAppointments>() { appointment };
+            else
+                pet.AppointmentIds.Add(appointment);
+
+
+            db.Entry(pet).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return appointment.PetAppId;
+        }
+
+
+
+
+        public async Task<int> CreatePetAsync(Pet pet)
+        {
+            db.Pets.Add(pet);
+            await db.SaveChangesAsync();
+            PetOwner owner = await db.PetOwners.FindAsync(pet.OwnerId);
+            OwnerHasPet ownerHasPet = new OwnerHasPet();
+            ownerHasPet.PetId = pet.PetId;
+            if (owner.PetIds == null)
+                owner.PetIds = new List<OwnerHasPet>() { ownerHasPet };
+            else
+                owner.PetIds.Add(ownerHasPet);
+            await db.SaveChangesAsync();
+            return pet.PetId;
+        }
+
+        public async void DeletePetAsync(int petId)
+        {
+            Pet pet = await db.Pets.FindAsync(petId);
+            ownerRepo.DeletePetInOwner(petId, pet.OwnerId);
+            db.Pets.Remove(db.Pets.Find(petId));
+            await db.SaveChangesAsync();
+        }
+
+        public async Task<Pet> EditPetAsync(Pet pet)
+        {
+           if(await db.Pets.FindAsync(pet.PetId)!=null)
+            db.Entry(pet).State = EntityState.Modified;
+
+            
+            return pet;
+        }
+
+        public Task<List<UpdatePetDto>> GetAllPetsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Pet> GetPetByIdAsync(int id)
+        {
+            Pet pet = await db.Pets.FindAsync(id);
+            return pet;
+
+        }
+
+        public async Task<PetAndAppointments> GetPetandAppByIdAsync(int petAppId)
+        {
+            PetAndAppointments appointment = await db.PetAndAppointments.FindAsync(petAppId);
+            return appointment;
         }
     }
 }

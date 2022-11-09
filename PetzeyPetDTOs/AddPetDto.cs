@@ -10,7 +10,6 @@ namespace PetzeyPetDTOs
 {
     public class AddPetDto
     {  
-        public int PetId { get; set; }
        
         public int OwnerId { get; set; }
         
