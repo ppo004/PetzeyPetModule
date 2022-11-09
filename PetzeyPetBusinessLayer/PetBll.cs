@@ -10,9 +10,11 @@ using System.Threading.Tasks;
 
 namespace PetzeyPetBusinessLayer
 {
+   
     public class PetBll
     {
         IPetDbRepository repo = new PetDbRepository();
+        
         MapperConfiguration config = new MapperConfiguration(cfg =>
 
                   cfg.CreateMap<AddPetDto, Pet>().ForMember(dest => dest.AppointmentIds, act => act.Ignore())
@@ -20,35 +22,40 @@ namespace PetzeyPetBusinessLayer
               );
         MapperConfiguration config1 = new MapperConfiguration(cfg =>
 
-                 cfg.CreateMap<PetDto, Pet>()
+                 cfg.CreateMap<UpdatePetDto, Pet>()
 
              );
         MapperConfiguration config2 = new MapperConfiguration(cfg =>
 
-                 cfg.CreateMap<Pet, PetDto>()
+                 cfg.CreateMap<Pet, UpdatePetDto>()
 
              );
+       
 
-        public PetDto CreatePet(AddPetDto petDto)
+        public UpdatePetDto CreatePet(AddPetDto petDto)
         {
             Mapper mapper = new Mapper(config);
             Pet pet = mapper.Map<Pet>(petDto);
+          
+
             int id = repo.CreatePet(pet);
             Pet pet1 = repo.GetPetById(id);
 
             Mapper mapper1 = new Mapper(config2);
-            PetDto petDto1 = mapper1.Map<PetDto>(pet1);
+            UpdatePetDto petDto1 = mapper1.Map<UpdatePetDto>(pet1);
             return petDto1;
 
         }
-        public PetDto EditPet(PetDto petDto)
+
+       
+        public UpdatePetDto EditPet(UpdatePetDto petDto)
         {
             Mapper mapper = new Mapper(config1);
             Pet pet = mapper.Map<Pet>(petDto);
             Pet p = repo.EditPet(pet);
 
             Mapper mapper1 = new Mapper(config2);
-            PetDto changedPetDto = mapper1.Map<PetDto>(p);
+            UpdatePetDto changedPetDto = mapper1.Map<UpdatePetDto>(p);
 
             return changedPetDto;
 
@@ -63,11 +70,11 @@ namespace PetzeyPetBusinessLayer
             return false;
         }
 
-        public PetDto GetPetById(int id)
+        public UpdatePetDto GetPetById(int id)
         {
             Pet pet = repo.GetPetById(id);
             Mapper mapper1 = new Mapper(config2);
-            PetDto petDto = mapper1.Map<PetDto>(pet);
+            UpdatePetDto petDto = mapper1.Map<UpdatePetDto>(pet);
             if (petDto == null)
                 return null;
             return petDto;

@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="PetAppDto.cs" />
     <Compile Include="AddPetDto.cs" />
-    <Compile Include="PetDto.cs" />
+    <Compile Include="UpdatePetDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
