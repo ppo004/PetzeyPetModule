@@ -9,11 +9,13 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
 {
     public interface IPetOwnerRepository
     {
-        bool CreateOwner(PetOwner petOwner);
-        void EditOwner(PetOwner petOwner);
+        int CreateOwner(PetOwner petOwner);
+        PetOwner EditOwner(PetOwner petOwner);
         List<string> GetOwnerNames();
         void AddProfilePic(int petOwnerId, string imageUrl);
         void DeleteProfilePic(int petOwnerId);
+
+        PetOwner getOwnerById (int petOwnerId);
 
     }
 }

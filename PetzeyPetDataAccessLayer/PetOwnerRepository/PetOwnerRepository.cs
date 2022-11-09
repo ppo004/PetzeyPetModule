@@ -1,4 +1,5 @@
-﻿using PetzeyPetEntities;
+﻿using PetzeyPetDTOs;
+using PetzeyPetEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,11 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
     {
         PetDbContext db = new PetDbContext();
 
-        public bool CreateOwner(PetOwner petOwner)
+        public int CreateOwner(PetOwner petOwner)
         {
             db.PetOwners.Add(petOwner);
             db.SaveChanges();
-            return true;
+            return petOwner.PetOwnerId;
         }
 
         public void AddProfilePic(int petOwnerId, string imageUrl)
@@ -30,7 +31,7 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
         }
 
 
-        public void EditOwner(PetOwner petOwner)
+        public PetOwner EditOwner(PetOwner petOwner)
         {
             /*var ownernew = db.PetOwners.Find(petOwner.PetOwnerId);
             if (ownernew != null)
@@ -42,11 +43,17 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
             return false;*/
             db.Entry(petOwner).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
+            return petOwner;
         }
 
         public List<string> GetOwnerNames()
         {
             throw new NotImplementedException();
+        }
+
+        public PetOwner getOwnerById(int petOwnerId)
+        {
+            return db.PetOwners.Find(petOwnerId);
         }
     }
 }
