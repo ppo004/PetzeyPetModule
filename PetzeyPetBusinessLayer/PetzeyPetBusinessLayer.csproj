@@ -75,6 +75,10 @@
       <Project>{ECCE5D65-D768-44FC-8CB7-2BAC0B7CAE98}</Project>
       <Name>PetzeyPetEntities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PetzeyPetExceptions\PetzeyPetExceptions.csproj">
+      <Project>{f38ef087-fb90-40c9-90b9-bb47f4c22303}</Project>
+      <Name>PetzeyPetExceptions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
