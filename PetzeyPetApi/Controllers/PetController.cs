@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using log4net;
+using Microsoft.AspNet.OData;
 using PetzeyPetBusinessLayer;
 using PetzeyPetDTOs;
 using PetzeyPetEntities;
@@ -12,6 +13,7 @@ using System.Web.Http;
 using System.Web.Http.OData;
 using System.Web.Http.Results;
 using System.Web.Mvc;
+using EnableQueryAttribute = Microsoft.AspNet.OData.EnableQueryAttribute;
 using RouteAttribute = System.Web.Http.RouteAttribute;
 
 namespace PetzeyPetApi.Controllers
@@ -37,7 +39,6 @@ namespace PetzeyPetApi.Controllers
                 return BadRequest();
             return Ok(petDto);
         }
-
 
         public IHttpActionResult DeletePet(int id)
         {
