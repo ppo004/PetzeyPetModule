@@ -1,4 +1,5 @@
-﻿using PetzeyPetDataAccessLayer.PetOwnerRepository;
+﻿using PetzeyPetBusinessLayer;
+using PetzeyPetDataAccessLayer.PetOwnerRepository;
 using PetzeyPetDTOs;
 using PetzeyPetEntities;
 using System;
@@ -12,7 +13,8 @@ namespace PetzeyPetApi.Controllers
 {
     public class PetOwnerController : ApiController
     {
-        private IPetOwnerRepository repo=new PetOwnerRepository();
+        //private IPetOwnerRepository repo=new PetOwnerRepository();
+        PetOwnerBll ownerbll=new PetOwnerBll();
         /*[HttpPost]
         [Route("api/add")]
         public IHttpActionResult Add(long OwnerID, string picUrl)
@@ -27,19 +29,28 @@ namespace PetzeyPetApi.Controllers
 */
 
         [Route("api/addOwner")]
-        public IHttpActionResult PostOwner(PetOwner petOwner)
+        public IHttpActionResult PostOwner(AddOwnerDto petOwner)
         {
-            if (repo.CreateOwner(petOwner))
+           EditOwnerDto ownerDto = ownerbll.CreateOwner(petOwner);
+            
+           if (ownerDto==null)
             {
-                return Ok();
+                return BadRequest();
             }
-            else return BadRequest();
+            else return Ok(ownerDto);
         }
-        [Route("api/editOwner")]
+        /*[Route("api/editOwner")]
         public IHttpActionResult Put(PetOwner petOwner)
         {
             repo.EditOwner(petOwner);
             return Ok();
+        }*/
+        public IHttpActionResult Get(int id)
+        {
+            EditOwnerDto ownerDto = ownerbll.GetOwnerById(id);
+            if (ownerDto == null)
+                return NotFound();
+            return Ok(ownerDto);
         }
         [HttpPut]
         public IHttpActionResult AddProfilePic(AddImgUrlDto imgUrlDto)
