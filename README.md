@@ -1,17 +1,20 @@
-The following are the apis exposed by this module
+# Petsey Pet Module
+## The following are the apis exposed by this module
 
-Owner APIs
+### Owner APIs
+<p>GET : OwnerDetails (using OData)</p>
+<p>POST : CreateOwner(OwnerDetails)</p>
+<p>PUT : EditOwner(OwnerDetails)</p>
+<p>POST : AddProfilePicture(OwnerID, picUrl)</p>
+<p>DELETE : DeleteProfilePicture(OwnerID)</p>
 
-GET : OwnerDetails (using OData)
-POST : CreateOwner(OwnerDetails)
-PUT : EditOwner(OwnerDetails)
-POST : AddProfilePicture(OwnerID, picUrl)
-DELETE : DeleteProfilePicture(OwnerID)
+### Pet APIs
+<p>GET : PetDetails (using Odata)</p>
 
-Pet APIs
+<p>POST : CreatePet(PetDetails)</p>
+<p>DELETE : DeletePet(PetId)</p>
+<p>PUT : EditPet(PetDetails)</p>
+<p>POST : AddAppointmentIDToPet(petId, AppointmentID)</p>
 
-GET : PetDetails (using Odata)
-POST : CreatePet(PetDetails)
-DELETE : DeletePet(PetId)
-PUT : EditPet(PetDetails)
-POST : AddAppointmentIDToPet(petId, AppointmentID)
+
+
