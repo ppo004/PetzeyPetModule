@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PetzeyPetBusinessLayer.Validators;
 using PetzeyPetDataAccessLayer.PetOwnerRepository;
 using PetzeyPetDTOs;
 using PetzeyPetEntities;
@@ -14,11 +15,11 @@ namespace PetzeyPetBusinessLayer
     public class PetOwnerBll:IPetOwnerBll
     {
         IPetOwnerRepository repo;
-        IRegexFactory regexFactory;
+        Validator validator;
         public PetOwnerBll()
         {
             repo = new PetOwnerRepository();
-            regexFactory = new RegexFactory();
+            validator = new Validator();
         }
         MapperConfiguration addOwnerConfig = new MapperConfiguration(cfg =>
 
@@ -45,8 +46,8 @@ namespace PetzeyPetBusinessLayer
             try
             {
                 PetOwner owner = mapper.Map<PetOwner>(ownerDto);
-                if (!regexFactory.ValidateEmail(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
-                if (!regexFactory.ValidatePhoneNumber(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
+                if (!validator.EmailValidator(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
+                if (!validator.PhoneNumberValidator(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
                 int id = repo.CreateOwner(owner);
                 PetOwner owner1 = repo.getOwnerById(id);
                 Mapper mapper1 = new Mapper(editOwnerConfig2);
@@ -63,8 +64,8 @@ namespace PetzeyPetBusinessLayer
             {
                 Mapper mapper = new Mapper(addOwnerConfig);
                 PetOwner owner = mapper.Map<PetOwner>(ownerDto);
-                if (!regexFactory.ValidateEmail(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
-                if (!regexFactory.ValidatePhoneNumber(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
+                if (!validator.EmailValidator(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
+                if (!validator.PhoneNumberValidator(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
                 int id = await repo.CreateOwnerAsync(owner);
                 PetOwner owner1 = await repo.getOwnerByIdAsync(id);
                 Mapper mapper1 = new Mapper(editOwnerConfig2);
@@ -82,8 +83,8 @@ namespace PetzeyPetBusinessLayer
             try
             {
                 PetOwner owner = mapper.Map<PetOwner>(ownerDto);
-                if (!regexFactory.ValidateEmail(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
-                if (!regexFactory.ValidatePhoneNumber(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
+                if (!validator.EmailValidator(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
+                if (!validator.PhoneNumberValidator(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
                 PetOwner po = repo.EditOwner(owner);
                 Mapper mapper1 = new Mapper(editOwnerConfig2);
                 OwnerDto changedOwnerDto = mapper1.Map<OwnerDto>(po);
@@ -99,8 +100,8 @@ namespace PetzeyPetBusinessLayer
             {
                 Mapper mapper = new Mapper(editOwnerConfig);
                 PetOwner owner = mapper.Map<PetOwner>(ownerDto);
-                if (!regexFactory.ValidateEmail(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
-                if (!regexFactory.ValidatePhoneNumber(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
+                if (!validator.EmailValidator(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
+                if (!validator.PhoneNumberValidator(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
                 PetOwner po = await repo.EditOwnerAsync(owner);
                 Mapper mapper1 = new Mapper(editOwnerConfig2);
                 OwnerDto changedOwnerDto = mapper1.Map<OwnerDto>(po);
@@ -140,7 +141,7 @@ namespace PetzeyPetBusinessLayer
         {
             try
             {
-                if (!regexFactory.ValidateImageUrl(dto.imageUrl)) throw new IncorrectURLFormatException();
+                if (!validator.ImageUrlValidator(dto.imageUrl)) throw new IncorrectURLFormatException();
                 repo.AddProfilePic(dto.OwnerId, dto.imageUrl);
                 return repo.getOwnerById(dto.OwnerId);
             }
@@ -151,7 +152,7 @@ namespace PetzeyPetBusinessLayer
         {
             try
             {
-                if (!regexFactory.ValidateImageUrl(dto.imageUrl)) throw new IncorrectURLFormatException();
+                if (!validator.ImageUrlValidator(dto.imageUrl)) throw new IncorrectURLFormatException();
                 await repo.AddProfilePicAsync(dto.OwnerId, dto.imageUrl);
                 return await repo.getOwnerByIdAsync(dto.OwnerId);
             }
