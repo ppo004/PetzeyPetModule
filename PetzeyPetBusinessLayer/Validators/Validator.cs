@@ -30,13 +30,14 @@ namespace PetzeyPetBusinessLayer.Validators
         public bool BloodGroupValidator(string bloodGroup)
         {
             Regex regex = new Regex("/(A|B|AB|O)[+-]/");
+            // Change this to Animal's Blood Group Later
             MatchCollection matchedAuthors = regex.Matches(bloodGroup);
             return matchedAuthors.Count != 0;
         }
         public bool DOBValidator(string dob)
         {
             Regex regex = new Regex("^(3[01]|[12][0-9]|0?[1-9])/(1[0-2]|0?[1-9])/(?:[0-9]{2})?[0-9]{2}$");
-            MatchCollection matchedAuthors = regex.Matches(dob);
+            MatchCollection matchedAuthors = regex.Matches(dob.ToString());
             return matchedAuthors.Count != 0;
         }
         public bool LocationValidator(string locationURL)

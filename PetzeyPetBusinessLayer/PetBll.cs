@@ -8,7 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PetzeyPetExceptions;
-using System.Text.RegularExpressions;  
+using System.Text.RegularExpressions;
+using PetzeyPetBusinessLayer.Validators;
 
 namespace PetzeyPetBusinessLayer
 {
@@ -16,6 +17,7 @@ namespace PetzeyPetBusinessLayer
     public class PetBll:IPetBll
     {
         IPetDbRepository repo;
+        Validator validator;
         public PetBll()
         {
             this.repo = new PetDbRepository();
@@ -36,13 +38,6 @@ namespace PetzeyPetBusinessLayer
                  cfg.CreateMap<Pet, UpdatePetDto>()
 
              );
-
-        /// <summary>
-        /// BLL Functions
-        /// </summary>
-        /// 
-
-
         public bool AddAppointmentsToPet(PetAppDto petAppdto)
         {  //Add logic for checking that if pet exists
             int id = repo.AddAppointmentId(petAppdto.petId, petAppdto.AppointmentId);
@@ -52,8 +47,6 @@ namespace PetzeyPetBusinessLayer
             return true;
 
         }
-
-
         public UpdatePetDto CreatePet(AddPetDto petDto)
         {
             Mapper mapper = new Mapper(config);
@@ -61,7 +54,11 @@ namespace PetzeyPetBusinessLayer
             {
                 Pet pet = mapper.Map<Pet>(petDto);
 
-
+                if (pet.Name.Length == 0 || pet.BloodGroup.Length == 0) throw new EmptyFieldException();
+                //Make changes later by converting the above exception from general to specific for every field.
+                if (!validator.DOBValidator(pet.DOB.ToString())) throw new IncorrectDOBFormatException();
+                if (!validator.BloodGroupValidator(pet.BloodGroup)) throw new IncorrectBloodGroupFormatException();
+                if (!validator.ImageUrlValidator(pet.ImageUrl)) throw new IncorrectURLFormatException();
                 int id = repo.CreatePet(pet);
                 Pet pet1 = repo.GetPetById(id);
 
@@ -70,23 +67,57 @@ namespace PetzeyPetBusinessLayer
                 return petDto1;
             }
             catch (EmptyFieldException e) { throw e; }
-            catch (IncorrectAgeFormatException e) { throw e; }
             catch (IncorrectBloodGroupFormatException e) { throw e; }
             catch (IncorrectDOBFormatException e) { throw e; }
             catch (IncorrectURLFormatException e) { throw e; }
+
+            catch (OwnerDoesntExistException e) { throw e; }
+            catch (RepeatedAllergyException e) { throw e; } //TBD
+            catch (SameOwnerSameNameException e) { throw e; }
+        }
+        public async Task<UpdatePetDto> CreatePetAsync(AddPetDto petDto)
+        {
+            Mapper mapper = new Mapper(config);
+            try
+            {
+                Pet pet = mapper.Map<Pet>(petDto);
+                if (pet.Name.Length == 0 || pet.BloodGroup.Length == 0) throw new EmptyFieldException();
+                //Make changes later by converting the above exception from general to specific for every field.
+                if (!validator.DOBValidator(pet.DOB.ToString())) throw new IncorrectDOBFormatException();
+                if (!validator.BloodGroupValidator(pet.BloodGroup)) throw new IncorrectBloodGroupFormatException();
+                if (!validator.ImageUrlValidator(pet.ImageUrl)) throw new IncorrectURLFormatException();
+
+                pet.AppointmentIds = null;
+
+                int id = await repo.CreatePetAsync(pet);
+                Pet pet1 = await repo.GetPetByIdAsync(id);
+
+                Mapper mapper1 = new Mapper(config2);
+                UpdatePetDto petDto1 = mapper1.Map<UpdatePetDto>(pet1);
+                return petDto1;
+            }
+            catch (EmptyFieldException e) { throw e; }
+            catch (IncorrectBloodGroupFormatException e) { throw e; }
+            catch (IncorrectDOBFormatException e) { throw e; }
+            catch (IncorrectURLFormatException e) { throw e; }
+
             catch (OwnerDoesntExistException e) { throw e; }
             catch (RepeatedAllergyException e) { throw e; }
             catch (SameOwnerSameNameException e) { throw e; }
-
+            //TBD
         }
-
-
         public UpdatePetDto EditPet(UpdatePetDto petDto)
         {
             Mapper mapper = new Mapper(config1);
             try
             {
                 Pet pet = mapper.Map<Pet>(petDto);
+
+                if (pet.Name.Length == 0 || pet.BloodGroup.Length == 0) throw new EmptyFieldException();
+                //Make changes later by converting the above exception from general to specific for every field.
+                if (!validator.DOBValidator(pet.DOB.ToString())) throw new IncorrectDOBFormatException();
+                if (!validator.BloodGroupValidator(pet.BloodGroup)) throw new IncorrectBloodGroupFormatException();
+                if (!validator.ImageUrlValidator(pet.ImageUrl)) throw new IncorrectURLFormatException();
                 Pet p = repo.EditPet(pet);
 
                 Mapper mapper1 = new Mapper(config2);
@@ -95,15 +126,45 @@ namespace PetzeyPetBusinessLayer
                 return changedPetDto;
             }
             catch (EmptyFieldException e) { throw e; }
-            catch (IncorrectAgeFormatException e) { throw e; }
             catch (IncorrectBloodGroupFormatException e) { throw e; }
             catch (IncorrectDOBFormatException e) { throw e; }
             catch (IncorrectURLFormatException e) { throw e; }
+
             catch (OwnerDoesntExistException e) { throw e; }
             catch (RepeatedAllergyException e) { throw e; }
             catch (SameOwnerSameNameException e) { throw e; }
-            catch (PetDoesntExistException e) { throw e; }
+            //TBD
 
+        }
+        public async Task<UpdatePetDto> EditPetAsync(UpdatePetDto petDto)
+        {
+            Mapper mapper = new Mapper(config1);
+            try
+            {
+                Pet pet = mapper.Map<Pet>(petDto);
+
+                if (pet.Name.Length == 0 || pet.BloodGroup.Length == 0) throw new EmptyFieldException();
+                //Make changes later by converting the above exception from general to specific for every field.
+                if (!validator.DOBValidator(pet.DOB.ToString())) throw new IncorrectDOBFormatException();
+                if (!validator.BloodGroupValidator(pet.BloodGroup)) throw new IncorrectBloodGroupFormatException();
+                if (!validator.ImageUrlValidator(pet.ImageUrl)) throw new IncorrectURLFormatException();
+
+                Pet p = await repo.EditPetAsync(pet);
+
+                Mapper mapper1 = new Mapper(config2);
+                UpdatePetDto changedPetDto = mapper1.Map<UpdatePetDto>(p);
+
+                return changedPetDto;
+            }
+            catch (EmptyFieldException e) { throw e; }
+            catch (IncorrectBloodGroupFormatException e) { throw e; }
+            catch (IncorrectDOBFormatException e) { throw e; }
+            catch (IncorrectURLFormatException e) { throw e; }
+
+            catch (OwnerDoesntExistException e) { throw e; }
+            catch (RepeatedAllergyException e) { throw e; }
+            catch (SameOwnerSameNameException e) { throw e; }
+            //TBD
         }
 
         public bool DeletePet(int id)
@@ -117,6 +178,13 @@ namespace PetzeyPetBusinessLayer
             }
             catch (PetDoesntExistException e) { throw e; }
 
+        }
+        public async Task<bool> DeletePetAsync(int id)
+        {
+            repo.DeletePet(id);
+            if (await repo.GetPetByIdAsync(id) == null)
+                return true;
+            throw new PetDoesntExistException();
         }
 
         public UpdatePetDto GetPetById(int id)
@@ -134,74 +202,6 @@ namespace PetzeyPetBusinessLayer
             catch (PetDoesntExistException e) { throw e; }
         }
 
-        /// <summary>
-        /// Async BLL Functions
-        /// </summary>
-
-        public async Task<UpdatePetDto> CreatePetAsync(AddPetDto petDto)
-        {
-            try
-            {
-                Mapper mapper = new Mapper(config);
-                Pet pet = mapper.Map<Pet>(petDto);
-                pet.AppointmentIds = null;
-
-                int id = await repo.CreatePetAsync(pet);
-                Pet pet1 = await repo.GetPetByIdAsync(id);
-
-                Mapper mapper1 = new Mapper(config2);
-                UpdatePetDto petDto1 = mapper1.Map<UpdatePetDto>(pet1);
-                return petDto1;
-            }
-            catch (EmptyFieldException e) { throw e; }
-            catch (IncorrectAgeFormatException e) { throw e; }
-            catch (IncorrectBloodGroupFormatException e) { throw e; }
-            catch (IncorrectDOBFormatException e) { throw e; }
-            catch (IncorrectURLFormatException e) { throw e; }
-            catch (OwnerDoesntExistException e) { throw e; }
-            catch (RepeatedAllergyException e) { throw e; }
-            catch (SameOwnerSameNameException e) { throw e; }
-            catch (PetDoesntExistException e) { throw e; }
-
-
-        }
-
-
-        public async Task<UpdatePetDto> EditPetAsync(UpdatePetDto petDto)
-        {
-            try
-            {
-                Mapper mapper = new Mapper(config1);
-                Pet pet = mapper.Map<Pet>(petDto);
-                Pet p = await repo.EditPetAsync(pet);
-
-                Mapper mapper1 = new Mapper(config2);
-                UpdatePetDto changedPetDto = mapper1.Map<UpdatePetDto>(p);
-
-                return changedPetDto;
-            }
-            catch (EmptyFieldException e) { throw e; }
-            catch (IncorrectAgeFormatException e) { throw e; }
-            catch (IncorrectBloodGroupFormatException e) { throw e; }
-            catch (IncorrectDOBFormatException e) { throw e; }
-            catch (IncorrectURLFormatException e) { throw e; }
-            catch (OwnerDoesntExistException e) { throw e; }
-            catch (RepeatedAllergyException e) { throw e; }
-            catch (SameOwnerSameNameException e) { throw e; }
-            catch (PetDoesntExistException e) { throw e; }
-
-
-
-        }
-
-        public async Task<bool> DeletePetAsync(int id)
-        {
-            repo.DeletePet(id);
-            if (await repo.GetPetByIdAsync(id) == null)
-                return true;
-            throw new PetDoesntExistException();
-        }
-
         public async Task<UpdatePetDto> GetPetByIdAsync(int id)
         {
             try
@@ -215,10 +215,6 @@ namespace PetzeyPetBusinessLayer
             }
             catch (PetDoesntExistException e) { throw e; }
         }
-    
-
-
-
         public List<UpdatePetDto> GetAllPets()
         {
             Mapper mapper1 = new Mapper(config2);

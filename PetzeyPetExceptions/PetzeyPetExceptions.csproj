@@ -94,7 +94,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EmailAlreadyExistsException.cs" />
-    <Compile Include="IncorrectAgeFormatException.cs" />
     <Compile Include="EmptyFieldException.cs" />
     <Compile Include="IncorrectBloodGroupFormatException.cs" />
     <Compile Include="IncorrectDOBFormatException.cs" />
