@@ -66,12 +66,26 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="PetOwnerBllUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PetzeyPetBusinessLayer\PetzeyPetBusinessLayer.csproj">
+      <Project>{a9b3977d-2b73-401f-9288-23a00cfa488c}</Project>
+      <Name>PetzeyPetBusinessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PetzeyPetEntities\PetzeyPetEntities.csproj">
+      <Project>{ecce5d65-d768-44fc-8cb7-2bac0b7cae98}</Project>
+      <Name>PetzeyPetEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PetzeyPetExceptions\PetzeyPetExceptions.csproj">
+      <Project>{f38ef087-fb90-40c9-90b9-bb47f4c22303}</Project>
+      <Name>PetzeyPetExceptions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

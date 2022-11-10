@@ -48,8 +48,7 @@ namespace PetzeyPetBusinessLayer
                 PetOwner owner = mapper.Map<PetOwner>(ownerDto);
                 if (!validator.EmailValidator(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
                 if (!validator.PhoneNumberValidator(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
-                int id = repo.CreateOwner(owner);
-                PetOwner owner1 = repo.getOwnerById(id);
+                PetOwner owner1 = repo.CreateOwner(owner);
                 Mapper mapper1 = new Mapper(editOwnerConfig2);
                 OwnerDto ownerDto1 = mapper1.Map<OwnerDto>(owner1);
                 return ownerDto1;
@@ -66,8 +65,7 @@ namespace PetzeyPetBusinessLayer
                 PetOwner owner = mapper.Map<PetOwner>(ownerDto);
                 if (!validator.EmailValidator(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
                 if (!validator.PhoneNumberValidator(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
-                int id = await repo.CreateOwnerAsync(owner);
-                PetOwner owner1 = await repo.getOwnerByIdAsync(id);
+                PetOwner owner1 = await repo.CreateOwnerAsync(owner);
                 Mapper mapper1 = new Mapper(editOwnerConfig2);
                 OwnerDto ownerDto1 = mapper1.Map<OwnerDto>(owner1);
                 return ownerDto1;

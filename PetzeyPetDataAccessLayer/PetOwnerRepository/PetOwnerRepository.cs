@@ -12,11 +12,12 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
     {
         PetDbContext db = new PetDbContext();
 
-        public int CreateOwner(PetOwner petOwner)
+        public PetOwner CreateOwner(PetOwner petOwner)
         {
             db.PetOwners.Add(petOwner);
             db.SaveChanges();
-            return petOwner.PetOwnerId;
+            PetOwner owner = getOwnerById(petOwner.PetOwnerId);
+            return owner;
         }
 
         public PetOwner AddProfilePic(int petOwnerId, string imageUrl)
@@ -80,11 +81,11 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
 
 
 
-        public async Task<int> CreateOwnerAsync(PetOwner petOwner)
+        public async Task<PetOwner> CreateOwnerAsync(PetOwner petOwner)
         {
             db.PetOwners.Add(petOwner);
-            await db.SaveChangesAsync();
-            return petOwner.PetOwnerId;
+            db.SaveChanges();
+            return await getOwnerByIdAsync(petOwner.PetOwnerId);
         }
 
         public async Task<PetOwner> EditOwnerAsync(PetOwner petOwner)
