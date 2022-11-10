@@ -20,6 +20,5 @@ namespace PetzeyPetDTOs
         public string OwnerLocation { get; set; }
        
         public string ImageUrl { get; set; }
-        public List<OwnerHasPet> PetIds { get; set; }
     }
 }

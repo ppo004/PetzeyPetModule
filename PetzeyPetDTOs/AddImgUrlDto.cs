@@ -8,7 +8,7 @@ namespace PetzeyPetDTOs
 {
     public class AddImgUrlDto
     {
-        int PetOwnerId { get; set; }
-        string imgUrl { get; set; }
+        public int PetOwnerId { get; set; }
+        public string imgUrl { get; set; }
     }
 }

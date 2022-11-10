@@ -17,7 +17,7 @@ namespace PetzeyPetBusinessLayer.Validators
         }
         public bool PhoneNumberValidator(string phoneNumber)
         {
-            Regex regex = new Regex("^[0-9]+$");
+            Regex regex = new Regex("^[789]\\d{9}$");
             MatchCollection matchedAuthors = regex.Matches(phoneNumber);
             return matchedAuthors.Count != 0;
         }

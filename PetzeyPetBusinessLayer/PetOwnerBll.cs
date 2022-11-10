@@ -21,6 +21,12 @@ namespace PetzeyPetBusinessLayer
             repo = new PetOwnerRepository();
             validator = new Validator();
         }
+        public PetOwnerBll(IPetOwnerRepository repo)
+        {
+            this.repo = repo;
+            this.validator = new Validator();
+        }
+
         MapperConfiguration addOwnerConfig = new MapperConfiguration(cfg =>
 
                    cfg.CreateMap<AddOwnerDto, PetOwner>().ForMember(dest => dest.PetOwnerId, act => act.Ignore())
@@ -48,6 +54,7 @@ namespace PetzeyPetBusinessLayer
                 PetOwner owner = mapper.Map<PetOwner>(ownerDto);
                 if (!validator.EmailValidator(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
                 if (!validator.PhoneNumberValidator(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
+                if (!validator.ImageUrlValidator(owner.ImageUrl)) throw new IncorrectURLFormatException();
                 PetOwner owner1 = repo.CreateOwner(owner);
                 Mapper mapper1 = new Mapper(editOwnerConfig2);
                 OwnerDto ownerDto1 = mapper1.Map<OwnerDto>(owner1);
@@ -171,8 +178,8 @@ namespace PetzeyPetBusinessLayer
         {
             try
             {
-                repo.DeleteProfilePic(id);
-                return repo.getOwnerById(id);
+                PetOwner owner =  repo.DeleteProfilePic(id);
+                return owner;
             }
             catch (OwnerDoesntExistException e) { throw e; }
         }

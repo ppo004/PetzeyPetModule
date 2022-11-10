@@ -132,9 +132,6 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
             return await db.PetOwners.FindAsync(petOwnerId);
         }
 
-     
-
-       
 
     }
 }
