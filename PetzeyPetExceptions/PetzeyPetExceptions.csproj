@@ -53,6 +53,7 @@
     <Compile Include="IncorrectBloodGroupFormatException.cs" />
     <Compile Include="IncorrectDOBFormatException.cs" />
     <Compile Include="IncorrectEmailFormatException.cs" />
+    <Compile Include="IncorrectLocationFormat.cs" />
     <Compile Include="IncorrectPhoneNoFormatException.cs" />
     <Compile Include="IncorrectURLFormatException.cs" />
     <Compile Include="OwnerDoesntExistException.cs" />

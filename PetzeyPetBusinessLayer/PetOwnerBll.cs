@@ -21,6 +21,12 @@ namespace PetzeyPetBusinessLayer
             repo = new PetOwnerRepository();
             validator = new Validator();
         }
+        public PetOwnerBll(IPetOwnerRepository repo)
+        {
+            this.repo = repo;
+            this.validator = new Validator();
+        }
+
         MapperConfiguration addOwnerConfig = new MapperConfiguration(cfg =>
 
                    cfg.CreateMap<AddOwnerDto, PetOwner>().ForMember(dest => dest.PetOwnerId, act => act.Ignore())
@@ -51,16 +57,22 @@ namespace PetzeyPetBusinessLayer
             try
             {
                 PetOwner owner = mapper.Map<PetOwner>(ownerDto);
+                if (owner.OwnerEmail.Length == 0 || owner.OwnerPhone.Length == 0 || owner.OwnerName.Length == 0 || owner.OwnerLocation.Length == 0) throw new EmptyFieldException();
+                //Make changes later by converting the above exception from general to specific for every field.
                 if (!validator.EmailValidator(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
                 if (!validator.PhoneNumberValidator(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
+                if (!validator.ImageUrlValidator(owner.ImageUrl)) throw new IncorrectURLFormatException();
+                if (!validator.LocationValidator(owner.OwnerLocation)) throw new IncorrectLocationFormat();
                 PetOwner owner1 = repo.CreateOwner(owner);
                 Mapper mapper1 = new Mapper(editOwnerConfig2);
                 OwnerDto ownerDto1 = mapper1.Map<OwnerDto>(owner1);
                 return ownerDto1;
             }
             catch(DbUpdateException e) { throw e;}
+            catch(EmptyFieldException e) { throw e; }
             catch(IncorrectPhoneNoFormatException e) { throw e; }
             catch(IncorrectEmailFormatException e) { throw e; }
+            catch(IncorrectLocationFormat e) { throw e; }   
         }
         public async Task<OwnerDto> CreateOwnerAsync(AddOwnerDto ownerDto)
         {
@@ -68,16 +80,22 @@ namespace PetzeyPetBusinessLayer
             {
                 Mapper mapper = new Mapper(addOwnerConfig);
                 PetOwner owner = mapper.Map<PetOwner>(ownerDto);
+                if (owner.OwnerEmail.Length == 0 || owner.OwnerPhone.Length == 0 || owner.OwnerName.Length == 0 || owner.OwnerLocation.Length == 0) throw new EmptyFieldException(); 
+                //Make changes later by converting the above exception from general to specific for every field.
                 if (!validator.EmailValidator(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
                 if (!validator.PhoneNumberValidator(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
+                if (!validator.LocationValidator(owner.OwnerLocation)) throw new IncorrectLocationFormat();
                 PetOwner owner1 = await repo.CreateOwnerAsync(owner);
                 Mapper mapper1 = new Mapper(editOwnerConfig2);
                 OwnerDto ownerDto1 = mapper1.Map<OwnerDto>(owner1);
                 return ownerDto1;
             }
             catch (DbUpdateException e) { throw e; }
+            catch (EmptyFieldException e) { throw e; }
             catch (IncorrectPhoneNoFormatException e) { throw e; }
             catch (IncorrectEmailFormatException e) { throw e; }
+            catch (IncorrectLocationFormat e) { throw e; }
+
         }
 
         public OwnerDto EditOwner(OwnerDto ownerDto)
@@ -86,16 +104,21 @@ namespace PetzeyPetBusinessLayer
             try
             {
                 PetOwner owner = mapper.Map<PetOwner>(ownerDto);
+                if (owner.OwnerEmail.Length == 0 || owner.OwnerPhone.Length == 0 || owner.OwnerName.Length == 0 || owner.OwnerLocation.Length == 0) throw new EmptyFieldException();
+                //Make changes later by converting the above exception from general to specific for every field.
                 if (!validator.EmailValidator(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
                 if (!validator.PhoneNumberValidator(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
+                if (!validator.LocationValidator(owner.OwnerLocation)) throw new IncorrectLocationFormat();
                 PetOwner po = repo.EditOwner(owner);
                 Mapper mapper1 = new Mapper(editOwnerConfig2);
                 OwnerDto changedOwnerDto = mapper1.Map<OwnerDto>(po);
                 return changedOwnerDto;
             }
             catch (DbUpdateException e) { throw e; }
+            catch (EmptyFieldException e) { throw e; }
             catch (IncorrectPhoneNoFormatException e) { throw e; }
             catch (IncorrectEmailFormatException e) { throw e; }
+            catch (IncorrectLocationFormat e) { throw e; }
         }
         public async Task<OwnerDto> EditOwnerAsync(OwnerDto ownerDto)
         {
@@ -103,16 +126,21 @@ namespace PetzeyPetBusinessLayer
             {
                 Mapper mapper = new Mapper(editOwnerConfig);
                 PetOwner owner = mapper.Map<PetOwner>(ownerDto);
+                if (owner.OwnerEmail.Length == 0 || owner.OwnerPhone.Length == 0 || owner.OwnerName.Length == 0 || owner.OwnerLocation.Length == 0) throw new EmptyFieldException();
+                //Make changes later by converting the above exception from general to specific for every field.
                 if (!validator.EmailValidator(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
                 if (!validator.PhoneNumberValidator(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
+                if (!validator.LocationValidator(owner.OwnerLocation)) throw new IncorrectLocationFormat();
                 PetOwner po = await repo.EditOwnerAsync(owner);
                 Mapper mapper1 = new Mapper(editOwnerConfig2);
                 OwnerDto changedOwnerDto = mapper1.Map<OwnerDto>(po);
                 return changedOwnerDto;
             }
             catch (DbUpdateException e) { throw e; }
+            catch (EmptyFieldException e) { throw e; }
             catch (IncorrectPhoneNoFormatException e) { throw e; }
             catch (IncorrectEmailFormatException e) { throw e; }
+            catch (IncorrectLocationFormat e) { throw e; }
         }
 
         public OwnerDto GetOwnerById(int id)
@@ -176,8 +204,8 @@ namespace PetzeyPetBusinessLayer
         {
             try
             {
-                repo.DeleteProfilePic(id);
-                return repo.getOwnerById(id);
+                PetOwner owner =  repo.DeleteProfilePic(id);
+                return owner;
             }
             catch (OwnerDoesntExistException e) { throw e; }
         }
