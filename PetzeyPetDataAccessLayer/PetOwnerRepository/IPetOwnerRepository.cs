@@ -15,7 +15,7 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
         PetOwner AddProfilePic(int petOwnerId, string imageUrl);
         PetOwner DeleteProfilePic(int petOwnerId);
         void DeletePetInOwner(int petId, int ownerId);
-        List<Pet> getPets(int id);
+        List<Pet> getPetsOfOwner(int id);
         PetOwner getOwnerById (int petOwnerId);
 
         List<PetOwner> GetAllOwners();
