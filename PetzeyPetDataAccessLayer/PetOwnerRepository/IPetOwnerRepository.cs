@@ -15,8 +15,9 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
         PetOwner AddProfilePic(int petOwnerId, string imageUrl);
         PetOwner DeleteProfilePic(int petOwnerId);
         void DeletePetInOwner(int petId, int ownerId);
-        List<Pet> getPets(int id);
+        //List<Pet> getPets(int id);
         PetOwner getOwnerById (int petOwnerId);
+        List<Pet> getPetsOfOwner(int ownerId);
 
         List<PetOwner> GetAllOwners();
         Task<PetOwner> DeleteProfilePicAsync(int petOwnerId);
@@ -24,5 +25,7 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
         Task<PetOwner> AddProfilePicAsync(int ownerId, string imageUrl);
         Task<PetOwner> EditOwnerAsync(PetOwner owner);
         Task<PetOwner> CreateOwnerAsync(PetOwner owner);
+        Task<List<Pet>> getPetsOfOwnerAsync(int ownerId);
+
     }
 }

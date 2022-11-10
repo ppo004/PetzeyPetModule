@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PetzeyPetExceptions;
+using System.Data.Entity.Infrastructure.Design;
+using System.Security.Permissions;
+
 namespace PetzeyPetDataAccessLayer.PetOwnerRepository
 {
     public class PetOwnerRepository: IPetOwnerRepository
@@ -132,9 +135,35 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
             return await db.PetOwners.FindAsync(petOwnerId);
         }
 
-     
+        public List<Pet> getPets(int id)
+        {
+            throw new NotImplementedException();
+        }
 
-       
+        public List<Pet> getPetsOfOwner(int ownerId)
+        {
+            PetOwner owner = db.PetOwners.Find(ownerId);
+            if (owner == null)
+                return null;
+            
+            List<Pet> pets = new List<Pet>();
+            foreach (OwnerHasPet ownerPet in owner.PetIds)
+                 pets.Add(db.Pets.Find(ownerPet.PetId));
 
+            return pets;
+        }
+
+        public async Task<List<Pet>> getPetsOfOwnerAsync(int ownerId)
+        {
+            PetOwner owner = await db.PetOwners.FindAsync(ownerId);
+            if (owner == null)
+                return null;
+
+            List<Pet> pets = new List<Pet>();
+            foreach (OwnerHasPet ownerPet in owner.PetIds)
+                pets.Add(await db.Pets.FindAsync(ownerPet.PetId));
+
+            return pets;
+        }
     }
 }

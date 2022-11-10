@@ -38,7 +38,7 @@ namespace PetzeyPetBusinessLayer
              );
         MapperConfiguration config1 = new MapperConfiguration(cfg =>
 
-                 cfg.CreateMap<List<UpdatePetDto>, List<Pet>>()
+                 cfg.CreateMap<Pet, UpdatePetDto>()
 
              );
 
@@ -192,15 +192,43 @@ namespace PetzeyPetBusinessLayer
             catch (OwnerDoesntExistException e) { throw e; }
         }
 
-        public List<UpdatePetDto> GetPets(int id)
+        public List<UpdatePetDto> GetPetsOfOwner(int ownerId)
         {
-            Mapper mapper = new Mapper(config1);
-            List<Pet> pets = repo.getPets(id);
-                List<UpdatePetDto> petDtos = mapper.Map<List<UpdatePetDto>>(pets);
+            try
+            {
+                PetOwner owner = repo.getOwnerById(ownerId);
+                if (owner == null)
+                    throw new OwnerDoesntExistException();
+                Mapper mapper = new Mapper(config1);
+                List<Pet> pets = repo.getPetsOfOwner(ownerId);
+                List<UpdatePetDto> petDtos = new List<UpdatePetDto>();
+                foreach (var pet in pets)
+                    petDtos.Add(mapper.Map<UpdatePetDto>(pet));
+                return petDtos;
 
-            return petDtos;
+            }
+            catch (OwnerDoesntExistException e) { throw e; }
+            catch (Exception e) { throw e; }
         }
 
+        public async Task<List<UpdatePetDto>> GetPetsOfOwnerAsync(int ownerId)
+        {
+            try
+            {
+                PetOwner owner =await repo.getOwnerByIdAsync(ownerId);
+                if (owner == null)
+                    throw new OwnerDoesntExistException();
+                Mapper mapper = new Mapper(config1);
+                List<Pet> pets =await repo.getPetsOfOwnerAsync(ownerId);
+                List<UpdatePetDto> petDtos = mapper.Map<List<UpdatePetDto>>(pets);
+                return petDtos;
+
+            }
+            catch (OwnerDoesntExistException e) { throw e; }
+            catch (Exception e) { throw e; }
+        }
+
+       
     }
 }
 

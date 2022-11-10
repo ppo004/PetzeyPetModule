@@ -12,7 +12,7 @@ namespace PetzeyPetBusinessLayer
     {
         OwnerDto CreateOwner(AddOwnerDto ownerDto);
         Task<OwnerDto> CreateOwnerAsync(AddOwnerDto ownerDto);
-
+        List<UpdatePetDto> GetPetsOfOwner(int ownerId);
         OwnerDto EditOwner(OwnerDto ownerDto);
         Task<OwnerDto> EditOwnerAsync(OwnerDto ownerDto);
         OwnerDto GetOwnerById(int id);
@@ -22,5 +22,7 @@ namespace PetzeyPetBusinessLayer
         List<OwnerDto> GetAllOwners();
         PetOwner DeleteOwnerProfilePic(int id);
         Task<PetOwner> DeleteOwnerProfilePicAsync(int id);
+        Task<List<UpdatePetDto>> GetPetsOfOwnerAsync(int ownerId);
+
     }
 }
