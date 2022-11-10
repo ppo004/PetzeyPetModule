@@ -136,7 +136,7 @@ namespace PetzeyPetDataAccessLayer
         public async void DeletePetAsync(int petId)
         {
             Pet pet = await db.Pets.FindAsync(petId);
-            ownerRepo.DeletePetInOwner(petId, pet.OwnerId);
+            ownerRepo.DeletePetInOwner(petId, pet.OwnerId);//add async func
             db.Pets.Remove(db.Pets.Find(petId));
             await db.SaveChangesAsync();
         }

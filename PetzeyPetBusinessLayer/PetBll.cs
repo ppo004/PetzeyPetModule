@@ -15,6 +15,7 @@ namespace PetzeyPetBusinessLayer
     public class PetBll
     {
         IPetDbRepository repo = new PetDbRepository();
+        PetOwnerBll ownerBll = new PetOwnerBll();
 
         MapperConfiguration config = new MapperConfiguration(cfg =>
 
@@ -37,6 +38,19 @@ namespace PetzeyPetBusinessLayer
         /// </summary>
         /// 
 
+        public void BusinessRules(AddPetDto petDto)
+        {
+            EditOwnerDto owner = ownerBll.GetOwnerById(petDto.OwnerId);
+            if (owner == null)
+                throw new OwnerDoesntExistException();
+            List<UpdatePetDto> petDtos = (List<UpdatePetDto>)ownerBll.GetPets(petDto.OwnerId)
+                                         .ToList().Where(pet=>pet.Name == petDto.Name);
+            if (petDtos.Count() > 0)
+                throw new SameOwnerSameNameException();
+            
+        }
+
+
 
         public bool AddAppointmentsToPet(PetAppDto petAppdto)
         {
@@ -55,10 +69,12 @@ namespace PetzeyPetBusinessLayer
             try
             {
                 Pet pet = mapper.Map<Pet>(petDto);
-
+                BusinessRules(petDto);
 
                 int id = repo.CreatePet(pet);
                 Pet pet1 = repo.GetPetById(id);
+                if (pet1 == null)
+                    throw new PetDoesntExistException();
 
                 Mapper mapper1 = new Mapper(config2);
                 UpdatePetDto petDto1 = mapper1.Map<UpdatePetDto>(pet1);
@@ -70,7 +86,6 @@ namespace PetzeyPetBusinessLayer
             catch (IncorrectDOBFormatException e) { throw e; }
             catch (IncorrectURLFormatException e) { throw e; }
             catch (OwnerDoesntExistException e) { throw e; }
-            catch (RepeatedAllergyException e) { throw e; }
             catch (SameOwnerSameNameException e) { throw e; }
 
         }
@@ -78,10 +93,14 @@ namespace PetzeyPetBusinessLayer
 
         public UpdatePetDto EditPet(UpdatePetDto petDto)
         {
+
             Mapper mapper = new Mapper(config1);
             try
             {
+                BusinessRules(petDto);
                 Pet pet = mapper.Map<Pet>(petDto);
+                if (repo.GetPetById(petDto.PetId) == null)
+                    throw new PetDoesntExistException();
                 Pet p = repo.EditPet(pet);
 
                 Mapper mapper1 = new Mapper(config2);
@@ -95,7 +114,6 @@ namespace PetzeyPetBusinessLayer
             catch (IncorrectDOBFormatException e) { throw e; }
             catch (IncorrectURLFormatException e) { throw e; }
             catch (OwnerDoesntExistException e) { throw e; }
-            catch (RepeatedAllergyException e) { throw e; }
             catch (SameOwnerSameNameException e) { throw e; }
             catch (PetDoesntExistException e) { throw e; }
 
@@ -128,6 +146,16 @@ namespace PetzeyPetBusinessLayer
         /// Async BLL Functions
         /// </summary>
 
+
+        public async Task<bool> AddAppointmentsToPetAsync(PetAppDto petAppdto)
+        {
+            int id = await repo.AddAppointmentIdAsyc(petAppdto.petId, petAppdto.AppointmentId);
+            PetAndAppointments appointment = await repo.GetPetandAppByIdAsync(id);
+            if (appointment == null)
+                return false;
+            return true;
+
+        }
         public async Task<UpdatePetDto> CreatePetAsync(AddPetDto petDto)
         {
             Mapper mapper = new Mapper(config);

@@ -28,6 +28,11 @@ namespace PetzeyPetBusinessLayer
                  cfg.CreateMap<PetOwner, EditOwnerDto>()
 
              );
+        MapperConfiguration config1 = new MapperConfiguration(cfg =>
+
+                 cfg.CreateMap<List<UpdatePetDto>, List<Pet>>()
+
+             );
 
         public EditOwnerDto CreateOwner(AddOwnerDto ownerDto)
         {
@@ -67,6 +72,15 @@ namespace PetzeyPetBusinessLayer
             if (ownerDto == null)
                 return null;
             return ownerDto;
+        }
+
+        public List<UpdatePetDto> GetPets(int id)
+        {
+            Mapper mapper = new Mapper(config1);
+            List<Pet> pets = repo.getPets(id);
+                List<UpdatePetDto> petDtos = mapper.Map<List<UpdatePetDto>>(pets);
+
+            return petDtos;
         }
 
     }

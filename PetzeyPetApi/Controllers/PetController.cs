@@ -79,7 +79,7 @@ namespace PetzeyPetApi.Controllers
                 return Ok();
             return BadRequest();
         }
-        [Route("api/Pet/AsyncAdd")]
+        [Route("api/Pet/Async")]
         public async Task<IHttpActionResult> PutpetAsync(UpdatePetDto pet)
         {
             UpdatePetDto petDto = await bll.EditPetAsync(pet);
@@ -96,6 +96,13 @@ namespace PetzeyPetApi.Controllers
             return Ok(petDto);
         }
 
+        [Route("api/Pet/AddAppointment/Async")]
+        public async Task<IHttpActionResult> AddAppointmentTopetAsync(PetAppDto petAppDto)
+        {
+            if (await bll.AddAppointmentsToPetAsync(petAppDto))
+                return Ok(petAppDto);
+            return BadRequest();
+        }
 
         [System.Web.Http.HttpGet]           
         [EnableQuery]

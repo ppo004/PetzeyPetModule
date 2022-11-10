@@ -13,7 +13,7 @@ namespace PetzeyPetApi.Controllers
 {
     public class PetOwnerController : ApiController
     {
-        //private IPetOwnerRepository repo=new PetOwnerRepository();
+        IPetOwnerRepository repo=new PetOwnerRepository();
         PetOwnerBll ownerbll=new PetOwnerBll();
         /*[HttpPost]
         [Route("api/add")]
@@ -51,5 +51,7 @@ namespace PetzeyPetApi.Controllers
                 return NotFound();
             return Ok(ownerDto);
         }
+        
+       
     }
 }
