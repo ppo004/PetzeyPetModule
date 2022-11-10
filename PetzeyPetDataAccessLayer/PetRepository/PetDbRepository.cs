@@ -62,13 +62,15 @@ namespace PetzeyPetDataAccessLayer
 
     
 
-        public void DeletePet(int petId)
+        public bool DeletePet(int petId)
         {
             Pet pet = db.Pets.Find(petId);
             ownerRepo.DeletePetInOwner(petId, pet.OwnerId);
             db.Pets.Remove(db.Pets.Find(petId));
             db.SaveChanges();
-
+            if (db.Pets.Find(petId) == null)
+                return true;
+            return false;
         }
 
         public Pet EditPet(Pet pet)
@@ -133,12 +135,16 @@ namespace PetzeyPetDataAccessLayer
             return pet.PetId;
         }
 
-        public async void DeletePetAsync(int petId)
+        public async Task<bool> DeletePetAsync(int petId)
         {
             Pet pet = await db.Pets.FindAsync(petId);
-            ownerRepo.DeletePetInOwner(petId, pet.OwnerId);
+            ownerRepo.DeletePetInOwner(petId, pet.OwnerId);//add async func
             db.Pets.Remove(db.Pets.Find(petId));
             await db.SaveChangesAsync();
+            if (db.Pets.FindAsync(petId) == null)
+                return true;
+            return false;
+
         }
 
         public async Task<Pet> EditPetAsync(Pet pet)

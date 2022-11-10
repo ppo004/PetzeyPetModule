@@ -9,15 +9,18 @@ namespace PetzeyPetBusinessLayer
 {
     public interface IPetBll
     {
-        bool AddAppointmentsToPet(PetAppDto petAppdto);
+        int AddAppointmentsToPet(PetAppDto petAppdto);
         UpdatePetDto CreatePet(AddPetDto petDto);
         UpdatePetDto EditPet(UpdatePetDto petDto);
         bool DeletePet(int id);
         UpdatePetDto GetPetById(int id);
+        List<UpdatePetDto> GetAllPets();
         Task<UpdatePetDto> CreatePetAsync(AddPetDto petDto);
         Task<UpdatePetDto> EditPetAsync(UpdatePetDto petDto);
         Task<bool> DeletePetAsync(int id);
         Task<UpdatePetDto> GetPetByIdAsync(int id);
-        List<UpdatePetDto> GetAllPets();
+        //Task<List<UpdatePetDto>> GetAllPetsAsync();
+        Task<bool> AddAppointmentsToPetAsync(PetAppDto petAppdto);
+
     }
 }

@@ -15,55 +15,68 @@ namespace PetzeyPetBusinessLayer
 
     public class PetBll:IPetBll
     {
-        IPetDbRepository repo;
-        public PetBll()
-        {
-            this.repo = new PetDbRepository();
-        }
+        IPetDbRepository repo = new PetDbRepository();
+        PetOwnerBll ownerBll = new PetOwnerBll();
 
-        MapperConfiguration config = new MapperConfiguration(cfg =>
-
-                  cfg.CreateMap<AddPetDto, Pet>().ForMember(dest => dest.AppointmentIds, act => act.Ignore())
-
-              );
-        MapperConfiguration config1 = new MapperConfiguration(cfg =>
-
-                 cfg.CreateMap<UpdatePetDto, Pet>()
-
-             );
-        MapperConfiguration config2 = new MapperConfiguration(cfg =>
-
-                 cfg.CreateMap<Pet, UpdatePetDto>()
-
-             );
+        MapperConfiguration config = new MapperConfiguration(cfg => cfg.CreateMap<AddPetDto, Pet>().ForMember(dest => dest.AppointmentIds, act => act.Ignore()));
+        MapperConfiguration config1 = new MapperConfiguration(cfg =>cfg.CreateMap<UpdatePetDto, Pet>());
+        MapperConfiguration config2 = new MapperConfiguration(cfg =>cfg.CreateMap<Pet, UpdatePetDto>());
+        MapperConfiguration config3 = new MapperConfiguration(cfg =>cfg.CreateMap<UpdatePetDto, AddPetDto>());
 
         /// <summary>
         /// BLL Functions
         /// </summary>
         /// 
 
+        public void BusinessRules(AddPetDto petDto)
+        {
+            OwnerDto owner = ownerBll.GetOwnerById(petDto.OwnerId);
+            if (owner == null) throw new OwnerDoesntExistException();
+            List<UpdatePetDto> petDtos = (List<UpdatePetDto>)ownerBll.GetPetsOfOwner(petDto.OwnerId)
+                                         .ToList().Where(pet=>pet.Name == petDto.Name);
+            if (petDtos.Count() > 0) throw new SameOwnerSameNameException();
+            
+        }
 
-        public bool AddAppointmentsToPet(PetAppDto petAppdto)
-        {  //Add logic for checking that if pet exists
-            int id = repo.AddAppointmentId(petAppdto.petId, petAppdto.AppointmentId);
-            PetAndAppointments appointment = repo.GetPetandAppById(id);
-            if (appointment == null)
-                return false;
-            return true;
+        public Pet DoesPetExist(int id)
+        {
+            Pet pet = repo.GetPetById(id);
+            if (pet == null) throw new PetDoesntExistException();
+            return pet;
+        }
+        public async Task<Pet> DoesPetExistAsync(int id)
+        {
+            Pet pet = await repo.GetPetByIdAsync(id);
+            if (pet == null) throw new PetDoesntExistException();
+            return pet;
+        }
+
+        public int AddAppointmentsToPet(PetAppDto petAppdto)
+        {
+            try {
+                Pet buff=DoesPetExist(petAppdto.petId);
+                int id = repo.AddAppointmentId(petAppdto.petId, petAppdto.AppointmentId);
+                PetAndAppointments appointment = repo.GetPetandAppById(id);
+                if (appointment == null) throw new PetDoesntExistException();// change exception
+                return appointment.PetAppId;
+            }
+            catch (PetDoesntExistException e) { throw e; }
+            catch(Exception e) { throw e; }
 
         }
 
 
         public UpdatePetDto CreatePet(AddPetDto petDto)
         {
-            Mapper mapper = new Mapper(config);
+            
             try
             {
+                Mapper mapper = new Mapper(config);
                 Pet pet = mapper.Map<Pet>(petDto);
-
+                BusinessRules(petDto);
 
                 int id = repo.CreatePet(pet);
-                Pet pet1 = repo.GetPetById(id);
+                Pet pet1 = DoesPetExist(id);
 
                 Mapper mapper1 = new Mapper(config2);
                 UpdatePetDto petDto1 = mapper1.Map<UpdatePetDto>(pet1);
@@ -74,23 +87,29 @@ namespace PetzeyPetBusinessLayer
             catch (IncorrectBloodGroupFormatException e) { throw e; }
             catch (IncorrectDOBFormatException e) { throw e; }
             catch (IncorrectURLFormatException e) { throw e; }
+            catch (PetDoesntExistException e) { throw e; }
             catch (OwnerDoesntExistException e) { throw e; }
-            catch (RepeatedAllergyException e) { throw e; }
             catch (SameOwnerSameNameException e) { throw e; }
-
+            catch (Exception e) { throw e; }
         }
 
 
         public UpdatePetDto EditPet(UpdatePetDto petDto)
         {
+
             Mapper mapper = new Mapper(config1);
+            Mapper mapper1 = new Mapper(config3);
+            AddPetDto addPetDto = mapper1.Map<AddPetDto>(petDto);   
             try
             {
+                BusinessRules(addPetDto);
+
+                Pet buff= DoesPetExist(petDto.PetId);
                 Pet pet = mapper.Map<Pet>(petDto);
                 Pet p = repo.EditPet(pet);
 
-                Mapper mapper1 = new Mapper(config2);
-                UpdatePetDto changedPetDto = mapper1.Map<UpdatePetDto>(p);
+                Mapper mapper2 = new Mapper(config2);
+                UpdatePetDto changedPetDto = mapper2.Map<UpdatePetDto>(p);
 
                 return changedPetDto;
             }
@@ -100,23 +119,21 @@ namespace PetzeyPetBusinessLayer
             catch (IncorrectDOBFormatException e) { throw e; }
             catch (IncorrectURLFormatException e) { throw e; }
             catch (OwnerDoesntExistException e) { throw e; }
-            catch (RepeatedAllergyException e) { throw e; }
             catch (SameOwnerSameNameException e) { throw e; }
             catch (PetDoesntExistException e) { throw e; }
-
+            catch (Exception e) { throw e; }
         }
 
         public bool DeletePet(int id)
         {
             try
             {
-                repo.DeletePet(id);
-                if (repo.GetPetById(id) == null)
-                    return true;
-                throw new PetDoesntExistException();
+                Pet buff= DoesPetExist(id);
+                return repo.DeletePet(id);
+                
             }
             catch (PetDoesntExistException e) { throw e; }
-
+            catch (Exception e) { throw e; }
         }
 
         public UpdatePetDto GetPetById(int id)
@@ -132,22 +149,39 @@ namespace PetzeyPetBusinessLayer
             }
 
             catch (PetDoesntExistException e) { throw e; }
+            catch (Exception e) { throw e; }
         }
 
         /// <summary>
         /// Async BLL Functions
         /// </summary>
 
+
+        public async Task<bool> AddAppointmentsToPetAsync(PetAppDto petAppdto)
+        {
+            try
+            {
+                Pet buff =await DoesPetExistAsync(petAppdto.petId);
+                int id = await repo.AddAppointmentIdAsyc(petAppdto.petId, petAppdto.AppointmentId);
+                PetAndAppointments appointment = repo.GetPetandAppById(id);
+                if (appointment == null)
+                    return false;
+                return true;
+            }
+            catch (PetDoesntExistException e) { throw e; }
+            catch (Exception e) { throw e; }
+
+        }
         public async Task<UpdatePetDto> CreatePetAsync(AddPetDto petDto)
         {
             try
             {
                 Mapper mapper = new Mapper(config);
                 Pet pet = mapper.Map<Pet>(petDto);
-                pet.AppointmentIds = null;
+                BusinessRules(petDto);
 
-                int id = await repo.CreatePetAsync(pet);
-                Pet pet1 = await repo.GetPetByIdAsync(id);
+                int id =await repo.CreatePetAsync(pet);
+                Pet pet1 = await DoesPetExistAsync(id);
 
                 Mapper mapper1 = new Mapper(config2);
                 UpdatePetDto petDto1 = mapper1.Map<UpdatePetDto>(pet1);
@@ -162,21 +196,27 @@ namespace PetzeyPetBusinessLayer
             catch (RepeatedAllergyException e) { throw e; }
             catch (SameOwnerSameNameException e) { throw e; }
             catch (PetDoesntExistException e) { throw e; }
-
+            catch (Exception e) { throw e; }
 
         }
 
 
         public async Task<UpdatePetDto> EditPetAsync(UpdatePetDto petDto)
         {
+
+            Mapper mapper = new Mapper(config1);
+            Mapper mapper1 = new Mapper(config3);
+            AddPetDto addPetDto = mapper1.Map<AddPetDto>(petDto);
             try
             {
-                Mapper mapper = new Mapper(config1);
-                Pet pet = mapper.Map<Pet>(petDto);
-                Pet p = await repo.EditPetAsync(pet);
+                BusinessRules(addPetDto);
 
-                Mapper mapper1 = new Mapper(config2);
-                UpdatePetDto changedPetDto = mapper1.Map<UpdatePetDto>(p);
+                Pet buff =await DoesPetExistAsync(petDto.PetId);
+                Pet pet = mapper.Map<Pet>(petDto);
+                Pet p =await repo.EditPetAsync(pet);
+
+                Mapper mapper2 = new Mapper(config2);
+                UpdatePetDto changedPetDto = mapper2.Map<UpdatePetDto>(p);
 
                 return changedPetDto;
             }
@@ -189,35 +229,38 @@ namespace PetzeyPetBusinessLayer
             catch (RepeatedAllergyException e) { throw e; }
             catch (SameOwnerSameNameException e) { throw e; }
             catch (PetDoesntExistException e) { throw e; }
-
+            catch (Exception e) { throw e; }
 
 
         }
 
         public async Task<bool> DeletePetAsync(int id)
         {
-            repo.DeletePet(id);
-            if (await repo.GetPetByIdAsync(id) == null)
-                return true;
-            throw new PetDoesntExistException();
+            try
+            {
+                Pet buff =await DoesPetExistAsync(id);
+                return await repo.DeletePetAsync(id);
+
+            }
+            catch (PetDoesntExistException e) { throw e; }
+            catch (Exception e) { throw e; }
         }
 
         public async Task<UpdatePetDto> GetPetByIdAsync(int id)
         {
             try
             {
-                Pet pet = await repo.GetPetByIdAsync(id);
-                if (pet == null)
-                    throw new PetDoesntExistException();
+                Pet pet = await DoesPetExistAsync(id);
                 Mapper mapper1 = new Mapper(config2);
                 UpdatePetDto petDto = mapper1.Map<UpdatePetDto>(pet);
                 return petDto;
             }
             catch (PetDoesntExistException e) { throw e; }
+            catch (Exception e) { throw e; }
         }
     
 
-
+        //Add exception
 
         public List<UpdatePetDto> GetAllPets()
         {
@@ -228,5 +271,9 @@ namespace PetzeyPetBusinessLayer
             return petDto;
         }
 
+        public Task<List<UpdatePetDto>> GetAllPetsAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
