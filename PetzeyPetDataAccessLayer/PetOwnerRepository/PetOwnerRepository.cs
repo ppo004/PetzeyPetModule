@@ -132,6 +132,9 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
             return await db.PetOwners.FindAsync(petOwnerId);
         }
 
-
+        public List<Pet> getPetsOfOwner(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
