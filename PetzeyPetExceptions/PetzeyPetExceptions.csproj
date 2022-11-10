@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmailAlreadyExistsException.cs" />
     <Compile Include="IncorrectAgeFormatException.cs" />
     <Compile Include="EmptyFieldException.cs" />
     <Compile Include="IncorrectBloodGroupFormatException.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="IncorrectURLFormatException.cs" />
     <Compile Include="OwnerDoesntExistException.cs" />
     <Compile Include="PetDoesntExistException.cs" />
+    <Compile Include="PhoneNumberExistsException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepeatedAllergyException.cs" />
     <Compile Include="SameOwnerSameNameException.cs" />

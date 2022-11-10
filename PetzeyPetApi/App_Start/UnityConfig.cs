@@ -1,5 +1,6 @@
+using PetzeyPetApi.Controllers;
 using System;
-
+using PetzeyPetBusinessLayer;
 using Unity;
 
 namespace PetzeyPetApi
@@ -41,7 +42,9 @@ namespace PetzeyPetApi
             // container.LoadConfiguration();
 
             // TODO: Register your type's mappings here.
-            //container.RegisterType<IPet, ProductRepository>();
+            container.RegisterType<IPetBll, PetBll>();
+            container.RegisterType<IPetOwnerBll, PetOwnerBll>();
+            //container.RegisterType<ILog, ProductRepository>();= log4net.LogManager.GetLogger(typeof(PetController));
         }
     }
 }

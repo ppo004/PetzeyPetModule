@@ -5,52 +5,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using PetzeyPetExceptions;
 namespace PetzeyPetDataAccessLayer.PetOwnerRepository
 {
     public class PetOwnerRepository: IPetOwnerRepository
     {
         PetDbContext db = new PetDbContext();
 
-        public int CreateOwner(PetOwner petOwner)
+        public PetOwner CreateOwner(PetOwner petOwner)
         {
             db.PetOwners.Add(petOwner);
             db.SaveChanges();
-            return petOwner.PetOwnerId;
+            PetOwner owner = getOwnerById(petOwner.PetOwnerId);
+            return owner;
         }
 
-        public void AddProfilePic(int petOwnerId, string imageUrl)
+        public PetOwner AddProfilePic(int petOwnerId, string imageUrl)
         {
             var owner = db.PetOwners.Find(petOwnerId);
             owner.ImageUrl = imageUrl;
+            db.SaveChanges();
+            return owner;
         }
 
-        public void DeleteProfilePic(int petOwnerId)
+        public PetOwner DeleteProfilePic(int petOwnerId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var owner = db.PetOwners.Find(petOwnerId);
+                if (owner == null) throw new OwnerDoesntExistException();
+                owner.ImageUrl = "shorturl.at/tJUZ3";
+                db.SaveChanges();
+                return owner;
+            }
+            catch(OwnerDoesntExistException e) { throw e; }
         }
 
 
         public PetOwner EditOwner(PetOwner petOwner)
         {
-            /*var ownernew = db.PetOwners.Find(petOwner.PetOwnerId);
-            if (ownernew != null)
-            {
-                db.Entry(petOwner).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
-                return true;
-            }
-            return false;*/
+            
             db.Entry(petOwner).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
             return petOwner;
         }
 
-        public List<string> GetOwnerNames()
-        {
-            throw new NotImplementedException();
-        }
-
+    
         public void DeletePetInOwner(int petId,int ownerId)
         {
           // List<OwnerHasPet> ownerHasPets = db.OwnerHasPets.Where(p => p.PetId == petId).ToList();
@@ -67,17 +67,74 @@ namespace PetzeyPetDataAccessLayer.PetOwnerRepository
             return db.PetOwners.Find(petOwnerId);
         }
 
-        public List<Pet> getPets(int id)
+        public List<PetOwner> GetAllOwners()
         {
-            List<OwnerHasPet> petIds = db.PetOwners.Find(id).PetIds.ToList();
-            List<Pet> pets = new List<Pet>();
-            foreach (var petId in petIds)
-            {
-                pets.Add(db.Pets.Find(petId.PetId));
-            }
-
-            return pets;
-
+            return db.PetOwners.ToList();
         }
+
+
+
+        /// <summary>
+        /// Async Funs
+        /// </summary>
+        ///
+
+
+
+        public async Task<PetOwner> CreateOwnerAsync(PetOwner petOwner)
+        {
+            db.PetOwners.Add(petOwner);
+            db.SaveChanges();
+            return await getOwnerByIdAsync(petOwner.PetOwnerId);
+        }
+
+        public async Task<PetOwner> EditOwnerAsync(PetOwner petOwner)
+        {
+            db.Entry(petOwner).State = System.Data.Entity.EntityState.Modified;
+            await db.SaveChangesAsync();
+            return petOwner; 
+        }
+
+    
+
+        public async Task<PetOwner> AddProfilePicAsync(int petOwnerId, string imageUrl)
+        {
+            try
+            {
+                var owner = db.PetOwners.Find(petOwnerId);
+                if (owner == null) throw new OwnerDoesntExistException();
+                owner.ImageUrl = imageUrl;
+                await db.SaveChangesAsync();
+                return owner;
+            }
+            catch(OwnerDoesntExistException e) { throw e; }
+        }
+
+        public async Task<PetOwner> DeleteProfilePicAsync(int petOwnerId)
+        {
+            var owner = db.PetOwners.Find(petOwnerId);
+            owner.ImageUrl = "shorturl.at/tJUZ3";
+            await db.SaveChangesAsync();
+            return owner;
+        }
+
+        public async void DeletePetInOwnerAsync(int petId, int ownerId)
+        {
+            PetOwner owner = db.PetOwners.Find(ownerId);
+            OwnerHasPet o = owner.PetIds.ToList().Where(p => p.PetId == petId).FirstOrDefault();
+            owner.PetIds.RemoveAll(p => p.PetId == petId);
+            db.OwnerHasPets.Remove(o);
+            await db.SaveChangesAsync();
+        }
+
+        public async Task<PetOwner> getOwnerByIdAsync(int petOwnerId)
+        {
+            return await db.PetOwners.FindAsync(petOwnerId);
+        }
+
+     
+
+       
+
     }
 }

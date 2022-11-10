@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace PetzeyPetDTOs
 {
-    public class EditOwnerDto
+    public class OwnerDto
     {
-        
         public int PetOwnerId { get; set; }
         
         public string OwnerName { get; set; }

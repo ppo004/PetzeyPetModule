@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace PetzeyPetDTOs
 {
-    public class AddImgUrlDto
+    public class AddProfilePicDto
     {
-        int PetOwnerId { get; set; }
-        string imgUrl { get; set; }
+        public int OwnerId { get; set; }
+        public string imageUrl { get; set; }
     }
 }
