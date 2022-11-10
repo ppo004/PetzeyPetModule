@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace PetzeyPetExceptions
 {
-    public class IncorrectAgeFormatException : ApplicationException
+    public class IncorrectLocationFormat : ApplicationException
     {
-        public IncorrectAgeFormatException() : base(String.Format("Incorrect Age Format")) { }
+        public IncorrectLocationFormat() : base(String.Format("Incorrect Location Format")) { }
     }
 }
