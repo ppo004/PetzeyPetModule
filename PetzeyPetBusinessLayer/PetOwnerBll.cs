@@ -52,12 +52,12 @@ namespace PetzeyPetBusinessLayer
             try
             {
                 PetOwner owner = mapper.Map<PetOwner>(ownerDto);
-                if (owner.OwnerEmail.Length == 0 || owner.OwnerPhone.Length == 0 || owner.OwnerName.Length == 0 || owner.OwnerLocation.Length == 0) throw new EmptyFieldException();
+                if (owner.OwnerEmail == null || owner.OwnerPhone == null || owner.OwnerName == null || owner.OwnerLocation == null) throw new EmptyFieldException();
                 //Make changes later by converting the above exception from general to specific for every field.
                 if (!validator.EmailValidator(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
                 if (!validator.PhoneNumberValidator(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
                 if (!validator.ImageUrlValidator(owner.ImageUrl)) throw new IncorrectURLFormatException();
-                if (!validator.LocationValidator(owner.OwnerLocation)) throw new IncorrectLocationFormat();
+                //if (!validator.LocationValidator(owner.OwnerLocation)) throw new IncorrectLocationFormat();
                 PetOwner owner1 = repo.CreateOwner(owner);
                 Mapper mapper1 = new Mapper(editOwnerConfig2);
                 OwnerDto ownerDto1 = mapper1.Map<OwnerDto>(owner1);
@@ -75,11 +75,12 @@ namespace PetzeyPetBusinessLayer
             {
                 Mapper mapper = new Mapper(addOwnerConfig);
                 PetOwner owner = mapper.Map<PetOwner>(ownerDto);
-                if (owner.OwnerEmail.Length == 0 || owner.OwnerPhone.Length == 0 || owner.OwnerName.Length == 0 || owner.OwnerLocation.Length == 0) throw new EmptyFieldException(); 
+                if (owner.OwnerEmail==null || owner.OwnerPhone == null || owner.OwnerName == null || owner.OwnerLocation == null) throw new EmptyFieldException(); 
                 //Make changes later by converting the above exception from general to specific for every field.
                 if (!validator.EmailValidator(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
                 if (!validator.PhoneNumberValidator(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
-                if (!validator.LocationValidator(owner.OwnerLocation)) throw new IncorrectLocationFormat();
+                if (!validator.ImageUrlValidator(owner.ImageUrl)) throw new IncorrectURLFormatException();
+                //if (!validator.LocationValidator(owner.OwnerLocation)) throw new IncorrectLocationFormat();
                 PetOwner owner1 = await repo.CreateOwnerAsync(owner);
                 Mapper mapper1 = new Mapper(editOwnerConfig2);
                 OwnerDto ownerDto1 = mapper1.Map<OwnerDto>(owner1);
@@ -99,11 +100,11 @@ namespace PetzeyPetBusinessLayer
             try
             {
                 PetOwner owner = mapper.Map<PetOwner>(ownerDto);
-                if (owner.OwnerEmail.Length == 0 || owner.OwnerPhone.Length == 0 || owner.OwnerName.Length == 0 || owner.OwnerLocation.Length == 0) throw new EmptyFieldException();
+                if (owner.OwnerEmail == null || owner.OwnerPhone == null || owner.OwnerName == null || owner.OwnerLocation == null) throw new EmptyFieldException();
                 //Make changes later by converting the above exception from general to specific for every field.
                 if (!validator.EmailValidator(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
                 if (!validator.PhoneNumberValidator(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
-                if (!validator.LocationValidator(owner.OwnerLocation)) throw new IncorrectLocationFormat();
+                //if (!validator.LocationValidator(owner.OwnerLocation)) throw new IncorrectLocationFormat();
                 PetOwner po = repo.EditOwner(owner);
                 Mapper mapper1 = new Mapper(editOwnerConfig2);
                 OwnerDto changedOwnerDto = mapper1.Map<OwnerDto>(po);
@@ -121,11 +122,11 @@ namespace PetzeyPetBusinessLayer
             {
                 Mapper mapper = new Mapper(editOwnerConfig);
                 PetOwner owner = mapper.Map<PetOwner>(ownerDto);
-                if (owner.OwnerEmail.Length == 0 || owner.OwnerPhone.Length == 0 || owner.OwnerName.Length == 0 || owner.OwnerLocation.Length == 0) throw new EmptyFieldException();
+                if (owner.OwnerEmail == null || owner.OwnerPhone == null || owner.OwnerName == null || owner.OwnerLocation == null) throw new EmptyFieldException();
                 //Make changes later by converting the above exception from general to specific for every field.
                 if (!validator.EmailValidator(owner.OwnerEmail)) throw new IncorrectEmailFormatException();
                 if (!validator.PhoneNumberValidator(owner.OwnerPhone)) throw new IncorrectPhoneNoFormatException();
-                if (!validator.LocationValidator(owner.OwnerLocation)) throw new IncorrectLocationFormat();
+                //if (!validator.LocationValidator(owner.OwnerLocation)) throw new IncorrectLocationFormat();
                 PetOwner po = await repo.EditOwnerAsync(owner);
                 Mapper mapper1 = new Mapper(editOwnerConfig2);
                 OwnerDto changedOwnerDto = mapper1.Map<OwnerDto>(po);
