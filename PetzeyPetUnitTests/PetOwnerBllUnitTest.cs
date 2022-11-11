@@ -7,6 +7,7 @@ using PetzeyPetDataAccessLayer.PetOwnerRepository;
 using PetzeyPetDTOs;
 using PetzeyPetExceptions;
 using PetzeyPetEntities;
+using System.Threading.Tasks;
 
 namespace PetzeyPetUnitTests
 {
@@ -14,32 +15,38 @@ namespace PetzeyPetUnitTests
     public class PetOwnerBllUnitTest
     {
         IPetOwnerBll ownerBll;
-        public PetOwnerBllUnitTest()
+        AddOwnerDto addOwnerDto;
+        [TestInitialize]
+        public void Initialise()
         {
-            ownerBll = new PetOwnerBll();           
+            ownerBll = new PetOwnerBll();
+
+        }
+        [TestMethod, ExpectedException(typeof(EmptyFieldException))]
+        public void EmptyfieldTest()
+        {
+            addOwnerDto = new AddOwnerDto();
+            ownerBll.CreateOwner(addOwnerDto);
         }
         [TestMethod,ExpectedException(typeof(IncorrectEmailFormatException))]
         public void IncorrectEmailTest()
         {
-            AddOwnerDto addOwnerDto = new AddOwnerDto();
-            addOwnerDto.OwnerEmail = "dummy";
+            addOwnerDto = new AddOwnerDto();
+            addOwnerDto.OwnerEmail = "invalid";addOwnerDto.OwnerName = "name";addOwnerDto.OwnerPhone = "9876543210";addOwnerDto.OwnerLocation = "https://goo.gl/maps/WRmv6ec8sTuZ8Z7y9";addOwnerDto.ImageUrl = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
             ownerBll.CreateOwner(addOwnerDto);
         }
         [TestMethod, ExpectedException(typeof(IncorrectPhoneNoFormatException))]
         public void IncorrectPhoneNumberTest()
         {
-            AddOwnerDto addOwnerDto = new AddOwnerDto();
-            addOwnerDto.OwnerEmail = "dummy1234@gmail.com`";
-            addOwnerDto.OwnerPhone = "987654321";
+            addOwnerDto = new AddOwnerDto();
+            addOwnerDto.OwnerEmail = "abcdefgh@gmail.com"; addOwnerDto.OwnerName = "name"; addOwnerDto.OwnerPhone = "987654321"; addOwnerDto.OwnerLocation = "https://goo.gl/maps/WRmv6ec8sTuZ8Z7y9"; addOwnerDto.ImageUrl = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
             ownerBll.CreateOwner(addOwnerDto);
         }
         [TestMethod, ExpectedException(typeof(IncorrectURLFormatException))]
         public void IncorrectImageUrl()
         {
             AddOwnerDto addOwnerDto = new AddOwnerDto();
-            addOwnerDto.OwnerEmail = "dummy1234@gmail.com";
-            addOwnerDto.OwnerPhone = "9876543210";
-            addOwnerDto.ImageUrl = "dkfdg";
+            addOwnerDto.OwnerEmail = "abcdefghe@gmail.com"; addOwnerDto.OwnerName = "name"; addOwnerDto.OwnerPhone = "8876543210"; addOwnerDto.OwnerLocation = "https://goo.gl/maps/WRmv6ec8sTuZ8Z7y9"; addOwnerDto.ImageUrl = "htts://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__48";
             ownerBll.CreateOwner(addOwnerDto);
         }
         [TestMethod]
@@ -47,22 +54,21 @@ namespace PetzeyPetUnitTests
         {
             Mock<IPetOwnerRepository> petRepoMock = new Mock<IPetOwnerRepository>();
             PetOwner owner = new PetOwner();
-            owner.OwnerEmail = "abcdefhg@gmail.com";owner.OwnerPhone = "9876543321";owner.OwnerName = "Dummylal Singh";owner.PetOwnerId = 1;owner.OwnerLocation = "ssfsf";owner.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
+            owner.OwnerEmail = "qwerty@gmail.com";owner.OwnerPhone = "7987654321";owner.OwnerName = "name";owner.PetOwnerId = 1;owner.OwnerLocation = "ssfsf";owner.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
             petRepoMock.Setup(p => p.CreateOwner(owner)).Returns(owner);
             AddOwnerDto dto = new AddOwnerDto();
-            dto.OwnerEmail = "abcdefhg@gmail.com"; dto.OwnerPhone = "9876543321"; dto.OwnerName = "Dummylal Singh"; dto.OwnerLocation = "ssfsf"; dto.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
-            OwnerDto res =  ownerBll.CreateOwner(dto);
-            Assert.IsInstanceOfType(res, typeof(OwnerDto));
+            dto.OwnerEmail = "qwerty@gmail.com"; dto.OwnerPhone = "7987654321"; dto.OwnerName = "Dummylal Singh"; dto.OwnerLocation = "ssfsf"; dto.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
+            Assert.IsInstanceOfType(ownerBll.CreateOwner(dto), typeof(OwnerDto));
         }
         [TestMethod]
         public void EditOwnerSuccessfully()
         {
             Mock<IPetOwnerRepository> petRepoMock = new Mock<IPetOwnerRepository>();
             PetOwner owner = new PetOwner();
-            owner.OwnerEmail = "abcdef@gmail.com"; owner.OwnerPhone = "9876543210"; owner.OwnerName = "Dummylal Singh"; owner.PetOwnerId = 1; owner.OwnerLocation = "ssfsf"; owner.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
+            owner.OwnerEmail = "qwerty@gmail.com"; owner.OwnerPhone = "7987654321"; owner.OwnerName = "name"; owner.PetOwnerId = 1; owner.OwnerLocation = "ssfsf"; owner.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
             petRepoMock.Setup(p=>p.EditOwner(owner)).Returns(owner);
             OwnerDto dto = new OwnerDto();dto.PetOwnerId = 1;
-            dto.OwnerEmail = "abcdefh@gmail.com"; dto.OwnerPhone = "9876543211"; dto.OwnerName = "Dummylal Singh"; dto.OwnerLocation = "ssfsf"; dto.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
+            dto.OwnerEmail = "qwerty@gmail.com"; dto.OwnerPhone = "7987654321"; dto.OwnerName = "Dummylal Singh"; dto.OwnerLocation = "ssfsf"; dto.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
             OwnerDto res = ownerBll.EditOwner(dto);
             Assert.IsInstanceOfType(res, typeof(OwnerDto));
         }
@@ -93,62 +99,59 @@ namespace PetzeyPetUnitTests
             Assert.IsInstanceOfType(owner, typeof(PetOwner));   
         }
         [TestMethod, ExpectedException(typeof(IncorrectEmailFormatException))]
-        public async void IncorrectEmailTestAsync()
+        public async Task IncorrectEmailTestAsync()
         {
-            AddOwnerDto addOwnerDto = new AddOwnerDto();
-            addOwnerDto.OwnerEmail = "dummy";
+            addOwnerDto = new AddOwnerDto();
+            addOwnerDto.OwnerEmail = "invalid"; addOwnerDto.OwnerName = "name"; addOwnerDto.OwnerPhone = "9876543210"; addOwnerDto.OwnerLocation = "https://goo.gl/maps/WRmv6ec8sTuZ8Z7y9"; addOwnerDto.ImageUrl = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
             await ownerBll.CreateOwnerAsync(addOwnerDto);
         }
         [TestMethod, ExpectedException(typeof(IncorrectPhoneNoFormatException))]
-        public async void IncorrectPhoneNumberTestAsync()
+        public async Task IncorrectPhoneNumberTestAsync()
         {
-            AddOwnerDto addOwnerDto = new AddOwnerDto();
-            addOwnerDto.OwnerEmail = "dummy1234@gmail.com`";
-            addOwnerDto.OwnerPhone = "987654321";
+            addOwnerDto = new AddOwnerDto();
+            addOwnerDto.OwnerEmail = "abcdefgh@gmail.com"; addOwnerDto.OwnerName = "name"; addOwnerDto.OwnerPhone = "987654321"; addOwnerDto.OwnerLocation = "https://goo.gl/maps/WRmv6ec8sTuZ8Z7y9"; addOwnerDto.ImageUrl = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
             await ownerBll.CreateOwnerAsync(addOwnerDto);
         }
         [TestMethod, ExpectedException(typeof(IncorrectURLFormatException))]
-        public async void IncorrectImageUrlAsync()
+        public async Task IncorrectImageUrlAsync()
         {
             AddOwnerDto addOwnerDto = new AddOwnerDto();
-            addOwnerDto.OwnerEmail = "dummy1234@gmail.com";
-            addOwnerDto.OwnerPhone = "9876543210";
-            addOwnerDto.ImageUrl = "dkfdg";
+            addOwnerDto.OwnerEmail = "abcdefghe@gmail.com"; addOwnerDto.OwnerName = "name"; addOwnerDto.OwnerPhone = "8876543210"; addOwnerDto.OwnerLocation = "https://goo.gl/maps/WRmv6ec8sTuZ8Z7y9"; addOwnerDto.ImageUrl = "htts://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__48";
             await ownerBll.CreateOwnerAsync(addOwnerDto);
         }
         [TestMethod]
-        public async void AddOwnerSuccessfullyAsync()
+        public async Task AddOwnerSuccessfullyAsync()
         {
             Mock<IPetOwnerRepository> petRepoMock = new Mock<IPetOwnerRepository>();
             PetOwner owner = new PetOwner();
-            owner.OwnerEmail = "abcdef@gmail.com"; owner.OwnerPhone = "9876543210"; owner.OwnerName = "Dummylal Singh"; owner.PetOwnerId = 1; owner.OwnerLocation = "ssfsf"; owner.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
+            owner.OwnerEmail = "qwerty1@gmail.com"; owner.OwnerPhone = "7987654421"; owner.OwnerName = "name"; owner.PetOwnerId = 1; owner.OwnerLocation = "ssfsf"; owner.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
             petRepoMock.Setup(p => p.CreateOwner(owner)).Returns(owner);
             AddOwnerDto dto = new AddOwnerDto();
-            dto.OwnerEmail = "abcdef@gmail.com"; dto.OwnerPhone = "9876543210"; dto.OwnerName = "Dummylal Singh"; dto.OwnerLocation = "ssfsf"; dto.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
+            dto.OwnerEmail = "qwerty1@gmail.com"; dto.OwnerPhone = "7987654421"; dto.OwnerName = "name"; dto.OwnerLocation = "ssfsf"; dto.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
             OwnerDto res = await ownerBll.CreateOwnerAsync(dto);
             Assert.IsInstanceOfType(res, typeof(OwnerDto));
         }
         [TestMethod]
-        public async void EditOwnerSuccessfullyAsync()
+        public async Task EditOwnerSuccessfullyAsync()
         {
             Mock<IPetOwnerRepository> petRepoMock = new Mock<IPetOwnerRepository>();
             PetOwner owner = new PetOwner();
-            owner.OwnerEmail = "abcdef@gmail.com"; owner.OwnerPhone = "9876543210"; owner.OwnerName = "Dummylal Singh"; owner.PetOwnerId = 1; owner.OwnerLocation = "ssfsf"; owner.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
-            petRepoMock.Setup(p => p.EditOwner(owner)).Returns(owner);
-            OwnerDto dto = new OwnerDto(); dto.PetOwnerId = 1;
-            dto.OwnerEmail = "abcdefh@gmail.com"; dto.OwnerPhone = "9876543211"; dto.OwnerName = "Dummylal Singh"; dto.OwnerLocation = "ssfsf"; dto.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
+            owner.OwnerEmail = "qwerty@gmail.com"; owner.OwnerPhone = "7987654321"; owner.OwnerName = "name"; owner.PetOwnerId = 1; owner.OwnerLocation = "ssfsf"; owner.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
+            petRepoMock.Setup(p=>p.EditOwner(owner)).Returns(owner);
+            OwnerDto dto = new OwnerDto();dto.PetOwnerId = 1;
+            dto.OwnerEmail = "qwerty@gmail.com"; dto.OwnerPhone = "7987654321"; dto.OwnerName = "Dummylal Singh"; dto.OwnerLocation = "ssfsf"; dto.ImageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
             OwnerDto res = await ownerBll.EditOwnerAsync(dto);
             Assert.IsInstanceOfType(res, typeof(OwnerDto));
         }
         [TestMethod, ExpectedException(typeof(IncorrectURLFormatException))]
-        public async void IncorrectProfilePicTestAsync()
+        public async Task IncorrectProfilePicTestAsync()
         {
             AddProfilePicDto dto = new AddProfilePicDto();
             dto.OwnerId = 1; dto.imageUrl = "fsffsfs";
             await ownerBll.AddOwnerProfilePicAsync(dto);
         }
         [TestMethod]
-        public async void AddProfilePicTestAsync()
+        public async Task AddProfilePicTestAsync()
         {
             Mock<IPetOwnerRepository> petRepoMock = new Mock<IPetOwnerRepository>();
             AddProfilePicDto dto = new AddProfilePicDto(); dto.OwnerId = 1; dto.imageUrl = "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg";
@@ -159,7 +162,7 @@ namespace PetzeyPetUnitTests
             Assert.IsInstanceOfType(owner1, typeof(PetOwner));
         }
         [TestMethod]
-        public async void DeleteProfileAsync()
+        public async Task DeleteProfileAsync()
         {
             Mock<IPetOwnerRepository> petRepoMock = new Mock<IPetOwnerRepository>();
             petRepoMock.Setup(p => p.DeleteProfilePic(1)).Returns(new PetOwner());
