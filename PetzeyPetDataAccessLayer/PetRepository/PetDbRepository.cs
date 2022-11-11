@@ -31,21 +31,15 @@ namespace PetzeyPetDataAccessLayer
             if (pet.AppointmentIds == null)
                 pet.AppointmentIds = new List<PetAndAppointments>() { appointment };
             else
-                pet.AppointmentIds.Add(appointment);
-            
-            
-            db.Entry(pet).State = EntityState.Modified;
+                pet.AppointmentIds.Add(appointment);db.Entry(pet).State = EntityState.Modified;
             db.SaveChanges();
             return appointment.PetAppId;
-            
-
         }
 
         public int CreatePet(Pet pet)
         {
             db.Pets.Add(pet);
             db.SaveChanges();
-
             PetOwner owner = db.PetOwners.Find(pet.OwnerId);
             OwnerHasPet ownerHasPet = new OwnerHasPet();
             ownerHasPet.PetId = pet.PetId;
@@ -53,14 +47,8 @@ namespace PetzeyPetDataAccessLayer
                 owner.PetIds = new List<OwnerHasPet>() { ownerHasPet };
             else
                 owner.PetIds.Add(ownerHasPet);
-
-            db.SaveChanges();
-
             return pet.PetId;
-
         }
-
-    
 
         public bool DeletePet(int petId)
         {
@@ -72,11 +60,9 @@ namespace PetzeyPetDataAccessLayer
                 return true;
             return false;
         }
-
         public Pet EditPet(Pet pet)
         {           
             db.Entry(pet).State = EntityState.Modified;
-            
             return pet;
         }
 
@@ -110,15 +96,10 @@ namespace PetzeyPetDataAccessLayer
                 pet.AppointmentIds = new List<PetAndAppointments>() { appointment };
             else
                 pet.AppointmentIds.Add(appointment);
-
-
             db.Entry(pet).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return appointment.PetAppId;
         }
-
-
-
 
         public async Task<int> CreatePetAsync(Pet pet)
         {
@@ -144,16 +125,13 @@ namespace PetzeyPetDataAccessLayer
             if (db.Pets.FindAsync(petId) == null)
                 return true;
             return false;
-
         }
 
         public async Task<Pet> EditPetAsync(Pet pet)
         {
            if(await db.Pets.FindAsync(pet.PetId)!=null)
             db.Entry(pet).State = EntityState.Modified;
-
-            
-            return pet;
+           return pet;
         }
 
         public Task<List<UpdatePetDto>> GetAllPetsAsync()
@@ -165,7 +143,6 @@ namespace PetzeyPetDataAccessLayer
         {
             Pet pet = await db.Pets.FindAsync(id);
             return pet;
-
         }
 
         public async Task<PetAndAppointments> GetPetandAppByIdAsync(int petAppId)
