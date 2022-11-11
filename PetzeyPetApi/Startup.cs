@@ -1,4 +1,6 @@
-﻿using Owin;
+﻿using Microsoft.AspNet.OData.Extensions;
+using Owin;
+using System.Web.Http;
 
 namespace PetzeyPetApi
 {
@@ -7,6 +9,7 @@ namespace PetzeyPetApi
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            GlobalConfiguration.Configuration.EnableDependencyInjection();
         }
     }
 }
