@@ -47,13 +47,21 @@ namespace PetzeyPetDataAccessLayer
                 owner.PetIds = new List<OwnerHasPet>() { ownerHasPet };
             else
                 owner.PetIds.Add(ownerHasPet);
-            return pet.PetId;
+            db.SaveChanges()
+;            return pet.PetId;
         }
 
         public bool DeletePet(int petId)
         {
+            //delete from appointment table as well!
             Pet pet = db.Pets.Find(petId);
             ownerRepo.DeletePetInOwner(petId, pet.OwnerId);
+            List<PetAndAppointments> appointments = pet.AppointmentIds.ToList();
+            foreach (PetAndAppointments appointment in appointments)
+            {
+                db.PetAndAppointments.Remove(appointment);
+            }
+            db.SaveChanges();
             db.Pets.Remove(db.Pets.Find(petId));
             db.SaveChanges();
             if (db.Pets.Find(petId) == null)
@@ -61,9 +69,15 @@ namespace PetzeyPetDataAccessLayer
             return false;
         }
         public Pet EditPet(Pet pet)
-        {           
-            db.Entry(pet).State = EntityState.Modified;
-            return pet;
+        {
+            Pet pet1 = db.Pets.Find(pet.PetId);
+            
+            db.Entry(pet1).CurrentValues.SetValues(pet);
+
+            db.SaveChanges();
+            
+
+            return pet1;
         }
 
         public List<Pet> GetAllPets()
@@ -118,20 +132,29 @@ namespace PetzeyPetDataAccessLayer
 
         public async Task<bool> DeletePetAsync(int petId)
         {
-            Pet pet = await db.Pets.FindAsync(petId);
-            ownerRepo.DeletePetInOwner(petId, pet.OwnerId);//add async func
-            db.Pets.Remove(db.Pets.Find(petId));
+            Pet pet =await db.Pets.FindAsync(petId);
+            ownerRepo.DeletePetInOwner(petId, pet.OwnerId);
+            List<PetAndAppointments> appointments = pet.AppointmentIds.ToList();
+            foreach (PetAndAppointments appointment in appointments)
+            {
+                db.PetAndAppointments.Remove(appointment);
+            }
+           await db.SaveChangesAsync();
+            db.Pets.Remove(await db.Pets.FindAsync(petId));
             await db.SaveChangesAsync();
-            if (db.Pets.FindAsync(petId) == null)
+            if (await db.Pets.FindAsync(petId) == null)
                 return true;
             return false;
         }
 
         public async Task<Pet> EditPetAsync(Pet pet)
         {
-           if(await db.Pets.FindAsync(pet.PetId)!=null)
-            db.Entry(pet).State = EntityState.Modified;
-           return pet;
+            Pet pet1 = await db.Pets.FindAsync(pet.PetId);
+
+            db.Entry(pet1).CurrentValues.SetValues(pet);
+
+           await db.SaveChangesAsync();
+            return pet;
         }
 
         public Task<List<UpdatePetDto>> GetAllPetsAsync()
