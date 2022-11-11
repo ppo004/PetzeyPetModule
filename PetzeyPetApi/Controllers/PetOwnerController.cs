@@ -230,6 +230,48 @@ namespace PetzeyPetApi.Controllers
             }
 
         }
+        [HttpGet]
+        [Route("api/PetOwner/Getpets/{ownerId}")]
+        public IHttpActionResult GetPetsOfowner(int ownerId)
+        {
+            try
+            {
+
+                log.Debug("Inside GetPetsOfowner of PetOwnerController");
+                log.Debug($"Recieved id is {ownerId}");
+                List<UpdatePetDto> pets = ownerbll.GetPetsOfOwner(ownerId).ToList();
+                log.Debug($"Sent Data is {JsonConvert.SerializeObject(pets)}");
+
+                return Ok(pets);
+            }
+            catch (OwnerDoesntExistException e) { log.Debug(e.Message); return BadRequest(e.Message); }
+            catch (Exception e)
+            {
+                log.Error(JsonConvert.SerializeObject(e));
+                return InternalServerError();
+            }
+        }
+        [HttpGet]
+        [Route("api/PetOwner/Async/Getpets/{ownerId}")]
+        public async Task<IHttpActionResult> GetPetsOfownerAsync(int ownerId)
+        {
+            try
+            {
+
+                log.Debug("Inside GetPetsOfowner of PetOwnerController");
+                log.Debug($"Recieved id is {ownerId}");
+                List<UpdatePetDto> pets =await ownerbll.GetPetsOfOwnerAsync(ownerId);
+                log.Debug($"Sent Data is {JsonConvert.SerializeObject(pets)}");
+
+                return Ok(pets);
+            }
+            catch (OwnerDoesntExistException e) { log.Debug(e.Message); return BadRequest(e.Message); }
+            catch (Exception e)
+            {
+                log.Error(JsonConvert.SerializeObject(e));
+                return InternalServerError();
+            }
+        }
 
         [System.Web.Http.HttpGet]
         [EnableQuery]
