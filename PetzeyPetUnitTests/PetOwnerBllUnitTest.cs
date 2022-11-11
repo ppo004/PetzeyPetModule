@@ -10,14 +10,13 @@ using PetzeyPetEntities;
 
 namespace PetzeyPetUnitTests
 {
-    [TestClass]
+   [TestClass]
     public class PetOwnerBllUnitTest
     {
         IPetOwnerBll ownerBll;
         public PetOwnerBllUnitTest()
         {
-            ownerBll = new PetOwnerBll();
-            
+            ownerBll = new PetOwnerBll();           
         }
         [TestMethod,ExpectedException(typeof(IncorrectEmailFormatException))]
         public void IncorrectEmailTest()

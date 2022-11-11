@@ -39,7 +39,6 @@ namespace PetzeyPetApi.Controllers
             {
                 log.Debug("Inside AddAppointmentTopetAsync of PetController");
                 log.Debug($"Recieved Data is {JsonConvert.SerializeObject(petAppDto)} added appointment to pet");
-
                 return Ok(bll.AddAppointmentsToPet(petAppDto));
                
             }
@@ -58,14 +57,11 @@ namespace PetzeyPetApi.Controllers
             {
                 log.Debug("Inside PostPet of PetController");
                 log.Debug($"Recieved Data is {JsonConvert.SerializeObject(pet)}");
-
                 UpdatePetDto petDto = bll.CreatePet(pet);
                 log.Debug($"Sent Data is {JsonConvert.SerializeObject(petDto)}");
-
                 return Ok(petDto);
             }
 
-            catch (IncorrectEmailFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (EmptyFieldException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectAgeFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectBloodGroupFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
@@ -78,8 +74,6 @@ namespace PetzeyPetApi.Controllers
                 log.Error(JsonConvert.SerializeObject(e));
                 return InternalServerError();
             }
-
-
         }
 
         public IHttpActionResult DeletePet(int id)
@@ -88,10 +82,7 @@ namespace PetzeyPetApi.Controllers
             {
                 log.Debug("Inside DeletePet of PetController");
                 log.Debug($"Recieved Data is {JsonConvert.SerializeObject(id)} performed deletion");
-
                 return Ok(bll.DeletePet(id));
-                //log.Debug($"Sent Data is {JsonConvert.SerializeObject(petDto)}");
-
             }
             catch (PetDoesntExistException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (Exception e)
@@ -99,7 +90,6 @@ namespace PetzeyPetApi.Controllers
                 log.Error(JsonConvert.SerializeObject(e));
                 return InternalServerError();
             }
-
         }
 
         public IHttpActionResult Putpet(UpdatePetDto pet)
@@ -108,13 +98,10 @@ namespace PetzeyPetApi.Controllers
             {
                 log.Debug("Inside PutPet of PetController");
                 log.Debug($"Recieved Data is {JsonConvert.SerializeObject(pet)} ");
-
                 UpdatePetDto petDto = bll.EditPet(pet);
                 log.Debug($"Sent Data is {JsonConvert.SerializeObject(petDto)}");
-
                 return Ok(petDto);
             }
-            catch (IncorrectEmailFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (EmptyFieldException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectAgeFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectBloodGroupFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
@@ -136,10 +123,8 @@ namespace PetzeyPetApi.Controllers
             {
                 log.Debug("Inside GetPetById of PetController");
                 log.Debug($"Recieved Data is {JsonConvert.SerializeObject(id)}");
-
                 UpdatePetDto petDto = bll.GetPetById(id);
                 log.Debug($"Sent Data is {JsonConvert.SerializeObject(petDto)}");
-
                 return Ok(petDto);
             }
             catch (PetDoesntExistException e) { log.Debug(e.Message); return BadRequest(e.Message); }
@@ -158,10 +143,8 @@ namespace PetzeyPetApi.Controllers
             {
                 log.Debug("Inside PostPetAsync of PetController");
                 log.Debug($"Recieved Data is {JsonConvert.SerializeObject(pet)}");
-
                 UpdatePetDto petDto = await bll.CreatePetAsync(pet);
                 log.Debug($"Sent Data is {JsonConvert.SerializeObject(petDto)}");
-
                 return Ok(petDto);
             }
             catch (IncorrectEmailFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
@@ -203,10 +186,8 @@ namespace PetzeyPetApi.Controllers
             {
                 log.Debug("Inside PutPetAsync of PetController");
                 log.Debug($"Recieved Data is {JsonConvert.SerializeObject(pet)}");
-
                 UpdatePetDto petDto = await bll.EditPetAsync(pet);
                 log.Debug($"Sent Data is {JsonConvert.SerializeObject(petDto)}");
-
                 return Ok(petDto);
             }
             catch (IncorrectEmailFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
@@ -231,10 +212,8 @@ namespace PetzeyPetApi.Controllers
             {
                 log.Debug("Inside GetPetByIdAsync of PetController");
                 log.Debug($"Recieved Data is {JsonConvert.SerializeObject(id)}");
-
                 UpdatePetDto petDto = await bll.GetPetByIdAsync(id);
                 log.Debug($"Sent Data is {JsonConvert.SerializeObject(petDto)}");
-
                 return Ok(petDto);
             }
             catch (PetDoesntExistException e) { log.Debug(e.Message); return BadRequest(e.Message); }
@@ -243,17 +222,14 @@ namespace PetzeyPetApi.Controllers
                 log.Error(JsonConvert.SerializeObject(e));
                 return InternalServerError();
             }
-
         }
 
         [Route("api/Pet/AddAppointment/Async")]
         public async Task<IHttpActionResult> AddAppointmentTopetAsync(PetAppDto petAppDto)
         {
             try {
-
                 log.Debug("Inside AddAppointmentTopetAsync of PetController");
                 log.Debug($"Recieved Data is {JsonConvert.SerializeObject(petAppDto)} added appointment to pet");
-
                 return Ok(await bll.AddAppointmentsToPetAsync(petAppDto));
             }
             catch (PetDoesntExistException e) { log.Debug(e.Message); return BadRequest(e.Message); }
@@ -268,8 +244,7 @@ namespace PetzeyPetApi.Controllers
         [EnableQuery]
         public IQueryable<UpdatePetDto> GetAllPets()
         {
-           
-            return bll.GetAllPets().AsQueryable();
+           return bll.GetAllPets().AsQueryable();
         }
 
     }

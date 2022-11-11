@@ -32,10 +32,9 @@ namespace PetzeyPetBusinessLayer
         {
             OwnerDto owner = ownerBll.GetOwnerById(petDto.OwnerId);
             if (owner == null) throw new OwnerDoesntExistException();
-            List<UpdatePetDto> petDtos = (List<UpdatePetDto>)ownerBll.GetPetsOfOwner(petDto.OwnerId)
-                                         .ToList().Where(pet=>pet.Name == petDto.Name);
-            if (petDtos.Count() > 0) throw new SameOwnerSameNameException();
-            
+            List<UpdatePetDto> petDtos = ownerBll.GetPetsOfOwner(petDto.OwnerId).Where(p=>p.Name ==petDto.Name).ToList();           
+            if (petDtos.Count() > 0) throw new SameOwnerSameNameException();   
+       
         }
 
         public Pet DoesPetExist(int id)
@@ -62,22 +61,18 @@ namespace PetzeyPetBusinessLayer
             }
             catch (PetDoesntExistException e) { throw e; }
             catch(Exception e) { throw e; }
-
         }
 
 
         public UpdatePetDto CreatePet(AddPetDto petDto)
-        {
-            
+        {   
             try
             {
                 Mapper mapper = new Mapper(config);
                 Pet pet = mapper.Map<Pet>(petDto);
                 BusinessRules(petDto);
-
                 int id = repo.CreatePet(pet);
                 Pet pet1 = DoesPetExist(id);
-
                 Mapper mapper1 = new Mapper(config2);
                 UpdatePetDto petDto1 = mapper1.Map<UpdatePetDto>(pet1);
                 return petDto1;
@@ -96,21 +91,17 @@ namespace PetzeyPetBusinessLayer
 
         public UpdatePetDto EditPet(UpdatePetDto petDto)
         {
-
             Mapper mapper = new Mapper(config1);
             Mapper mapper1 = new Mapper(config3);
             AddPetDto addPetDto = mapper1.Map<AddPetDto>(petDto);   
             try
             {
                 BusinessRules(addPetDto);
-
                 Pet buff= DoesPetExist(petDto.PetId);
                 Pet pet = mapper.Map<Pet>(petDto);
                 Pet p = repo.EditPet(pet);
-
                 Mapper mapper2 = new Mapper(config2);
                 UpdatePetDto changedPetDto = mapper2.Map<UpdatePetDto>(p);
-
                 return changedPetDto;
             }
             catch (EmptyFieldException e) { throw e; }
@@ -179,10 +170,8 @@ namespace PetzeyPetBusinessLayer
                 Mapper mapper = new Mapper(config);
                 Pet pet = mapper.Map<Pet>(petDto);
                 BusinessRules(petDto);
-
                 int id =await repo.CreatePetAsync(pet);
                 Pet pet1 = await DoesPetExistAsync(id);
-
                 Mapper mapper1 = new Mapper(config2);
                 UpdatePetDto petDto1 = mapper1.Map<UpdatePetDto>(pet1);
                 return petDto1;
@@ -210,14 +199,11 @@ namespace PetzeyPetBusinessLayer
             try
             {
                 BusinessRules(addPetDto);
-
                 Pet buff =await DoesPetExistAsync(petDto.PetId);
                 Pet pet = mapper.Map<Pet>(petDto);
                 Pet p =await repo.EditPetAsync(pet);
-
                 Mapper mapper2 = new Mapper(config2);
                 UpdatePetDto changedPetDto = mapper2.Map<UpdatePetDto>(p);
-
                 return changedPetDto;
             }
             catch (EmptyFieldException e) { throw e; }
