@@ -78,7 +78,7 @@ namespace PetzeyPetUnitTests
             addPetDto.Breed = "dsda";
             addPetDto.Gender = "m";
             addPetDto.IsNeutured = true;
-            addPetDto.DOB = DateTime.MaxValue;
+            addPetDto.DOB = DateTime.Now;
             addPetDto.Name = "doggo";
             addPetDto.OwnerId = 3;
             addPetDto.Species = "dog";

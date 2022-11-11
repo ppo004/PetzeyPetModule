@@ -10,7 +10,7 @@ using PetzeyPetEntities;
 
 namespace PetzeyPetUnitTests
 {
-   // [TestClass]
+   [TestClass]
     public class PetOwnerBllUnitTest
     {
         IPetOwnerBll ownerBll;
