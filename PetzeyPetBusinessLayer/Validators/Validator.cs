@@ -29,7 +29,7 @@ namespace PetzeyPetBusinessLayer.Validators
         }
         public bool BloodGroupValidator(string bloodGroup)
         {
-            Regex regex = new Regex("/(A|B|AB|O)[+-]/");
+            Regex regex = new Regex("(A|B|AB|O)[+-]");
             MatchCollection matchedAuthors = regex.Matches(bloodGroup);
             return matchedAuthors.Count != 0;
         }
@@ -37,6 +37,12 @@ namespace PetzeyPetBusinessLayer.Validators
         {
             Regex regex = new Regex("^(3[01]|[12][0-9]|0?[1-9])/(1[0-2]|0?[1-9])/(?:[0-9]{2})?[0-9]{2}$");
             MatchCollection matchedAuthors = regex.Matches(dob);
+            return matchedAuthors.Count != 0;
+        }
+        public bool LocationValidator(string locationURL)
+        {
+            Regex regex = new Regex("^https?\\:\\/\\/(www\\.|maps\\.)?google(\\.[a-z]+){1,2}\\/maps\\/?\\?([^&]+&)*(ll=-?[0-9]{1,2}\\.[0-9]+,-?[0-9]{1,2}\\.[0-9]+|q=[^&]+)+($|&)");
+            MatchCollection matchedAuthors = regex.Matches(locationURL);
             return matchedAuthors.Count != 0;
         }
         //public bool LocationValidator(string locationURL)

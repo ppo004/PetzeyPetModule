@@ -8,7 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PetzeyPetExceptions;
-using System.Text.RegularExpressions;  
+using System.Text.RegularExpressions;
+using PetzeyPetBusinessLayer.Validators;
 
 namespace PetzeyPetBusinessLayer
 {
@@ -17,6 +18,7 @@ namespace PetzeyPetBusinessLayer
     {
         IPetDbRepository repo = new PetDbRepository();
         PetOwnerBll ownerBll = new PetOwnerBll();
+        Validator validator = new Validator();
 
         MapperConfiguration config = new MapperConfiguration(cfg => cfg.CreateMap<AddPetDto, Pet>().ForMember(dest => dest.AppointmentIds, act => act.Ignore()));
         MapperConfiguration config1 = new MapperConfiguration(cfg =>cfg.CreateMap<UpdatePetDto, Pet>());
@@ -32,9 +34,13 @@ namespace PetzeyPetBusinessLayer
         {
             OwnerDto owner = ownerBll.GetOwnerById(petDto.OwnerId);
             if (owner == null) throw new OwnerDoesntExistException();
-            List<UpdatePetDto> petDtos = ownerBll.GetPetsOfOwner(petDto.OwnerId).Where(p=>p.Name ==petDto.Name).ToList();           
-            if (petDtos.Count() > 0) throw new SameOwnerSameNameException();   
-       
+            
+            if (petDto.Name.Length == 0 || petDto.BloodGroup.Length == 0) throw new EmptyFieldException();
+            //Make changes later by converting the above exception from general to specific for every field.
+          // if (!validator.DOBValidator(petDto.DOB.ToString())) throw new IncorrectDOBFormatException();
+           if (!validator.BloodGroupValidator(petDto.BloodGroup)) throw new IncorrectBloodGroupFormatException();
+            if (!validator.ImageUrlValidator(petDto.ImageUrl)) throw new IncorrectURLFormatException();
+
         }
 
         public Pet DoesPetExist(int id)
@@ -65,12 +71,16 @@ namespace PetzeyPetBusinessLayer
 
 
         public UpdatePetDto CreatePet(AddPetDto petDto)
-        {   
+        {
+            Mapper mapper = new Mapper(config);
+
             try
             {
-                Mapper mapper = new Mapper(config);
                 Pet pet = mapper.Map<Pet>(petDto);
                 BusinessRules(petDto);
+                List<UpdatePetDto> pets = ownerBll.GetPetsOfOwner(petDto.OwnerId);
+                int count = pets.Where(p => p.Name == petDto.Name).Count();
+                if (count > 0) throw new SameOwnerSameNameException();
                 int id = repo.CreatePet(pet);
                 Pet pet1 = DoesPetExist(id);
                 Mapper mapper1 = new Mapper(config2);
@@ -78,13 +88,13 @@ namespace PetzeyPetBusinessLayer
                 return petDto1;
             }
             catch (EmptyFieldException e) { throw e; }
-            catch (IncorrectAgeFormatException e) { throw e; }
             catch (IncorrectBloodGroupFormatException e) { throw e; }
             catch (IncorrectDOBFormatException e) { throw e; }
             catch (IncorrectURLFormatException e) { throw e; }
-            catch (PetDoesntExistException e) { throw e; }
             catch (OwnerDoesntExistException e) { throw e; }
+            catch (RepeatedAllergyException e) { throw e; } //TBD
             catch (SameOwnerSameNameException e) { throw e; }
+            catch (PetDoesntExistException e) { throw e; }
             catch (Exception e) { throw e; }
         }
 
@@ -105,11 +115,11 @@ namespace PetzeyPetBusinessLayer
                 return changedPetDto;
             }
             catch (EmptyFieldException e) { throw e; }
-            catch (IncorrectAgeFormatException e) { throw e; }
             catch (IncorrectBloodGroupFormatException e) { throw e; }
             catch (IncorrectDOBFormatException e) { throw e; }
             catch (IncorrectURLFormatException e) { throw e; }
             catch (OwnerDoesntExistException e) { throw e; }
+            catch (RepeatedAllergyException e) { throw e; } //TBD
             catch (SameOwnerSameNameException e) { throw e; }
             catch (PetDoesntExistException e) { throw e; }
             catch (Exception e) { throw e; }
@@ -177,12 +187,11 @@ namespace PetzeyPetBusinessLayer
                 return petDto1;
             }
             catch (EmptyFieldException e) { throw e; }
-            catch (IncorrectAgeFormatException e) { throw e; }
             catch (IncorrectBloodGroupFormatException e) { throw e; }
             catch (IncorrectDOBFormatException e) { throw e; }
             catch (IncorrectURLFormatException e) { throw e; }
             catch (OwnerDoesntExistException e) { throw e; }
-            catch (RepeatedAllergyException e) { throw e; }
+            catch (RepeatedAllergyException e) { throw e; } //TBD
             catch (SameOwnerSameNameException e) { throw e; }
             catch (PetDoesntExistException e) { throw e; }
             catch (Exception e) { throw e; }
@@ -207,12 +216,11 @@ namespace PetzeyPetBusinessLayer
                 return changedPetDto;
             }
             catch (EmptyFieldException e) { throw e; }
-            catch (IncorrectAgeFormatException e) { throw e; }
             catch (IncorrectBloodGroupFormatException e) { throw e; }
             catch (IncorrectDOBFormatException e) { throw e; }
             catch (IncorrectURLFormatException e) { throw e; }
             catch (OwnerDoesntExistException e) { throw e; }
-            catch (RepeatedAllergyException e) { throw e; }
+            catch (RepeatedAllergyException e) { throw e; } //TBD
             catch (SameOwnerSameNameException e) { throw e; }
             catch (PetDoesntExistException e) { throw e; }
             catch (Exception e) { throw e; }

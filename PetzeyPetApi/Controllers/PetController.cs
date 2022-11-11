@@ -63,11 +63,10 @@ namespace PetzeyPetApi.Controllers
             }
 
             catch (EmptyFieldException e) { log.Debug(e.Message); return BadRequest(e.Message); }
-            catch (IncorrectAgeFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectBloodGroupFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
+            catch (PetDoesntExistException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectDOBFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectURLFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
-            catch (PetDoesntExistException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (OwnerDoesntExistException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (SameOwnerSameNameException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (Exception e) {
@@ -103,7 +102,6 @@ namespace PetzeyPetApi.Controllers
                 return Ok(petDto);
             }
             catch (EmptyFieldException e) { log.Debug(e.Message); return BadRequest(e.Message); }
-            catch (IncorrectAgeFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectBloodGroupFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectDOBFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectURLFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
@@ -147,14 +145,14 @@ namespace PetzeyPetApi.Controllers
                 log.Debug($"Sent Data is {JsonConvert.SerializeObject(petDto)}");
                 return Ok(petDto);
             }
+
             catch (IncorrectEmailFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (EmptyFieldException e) { log.Debug(e.Message); return BadRequest(e.Message); }
-            catch (IncorrectAgeFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectBloodGroupFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectDOBFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectURLFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
-            catch (PetDoesntExistException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (OwnerDoesntExistException e) { log.Debug(e.Message); return BadRequest(e.Message); }
+            catch (PetDoesntExistException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (SameOwnerSameNameException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (Exception e)
             {
@@ -192,7 +190,6 @@ namespace PetzeyPetApi.Controllers
             }
             catch (IncorrectEmailFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (EmptyFieldException e) { log.Debug(e.Message); return BadRequest(e.Message); }
-            catch (IncorrectAgeFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectBloodGroupFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectDOBFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectURLFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
