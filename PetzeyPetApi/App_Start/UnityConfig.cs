@@ -44,6 +44,7 @@ namespace PetzeyPetApi
             // TODO: Register your type's mappings here.
             container.RegisterType<IPetBll, PetBll>();
             container.RegisterType<IPetOwnerBll, PetOwnerBll>();
+            container.RegisterType<IAllergyBll, AllergyBll>();
             //container.RegisterType<ILog, ProductRepository>();= log4net.LogManager.GetLogger(typeof(PetController));
         }
     }

@@ -74,6 +74,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllergyRepository\AllergyRepository.cs" />
+    <Compile Include="AllergyRepository\IAllergyRepository.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PetOwnerRepository\IPetOwnerRepository.cs" />
     <Compile Include="PetOwnerRepository\PetOwnerRepository.cs" />

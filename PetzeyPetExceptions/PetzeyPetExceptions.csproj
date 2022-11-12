@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllergyAlreadyExistsException.cs" />
     <Compile Include="EmailAlreadyExistsException.cs" />
     <Compile Include="IncorrectAgeFormatException.cs" />
     <Compile Include="EmptyFieldException.cs" />
