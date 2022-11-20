@@ -43,6 +43,8 @@ namespace PetzeyPetApi.Controllers
             catch(IncorrectEmailFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectPhoneNoFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (DbUpdateException e) { log.Debug(e.Message); return BadRequest(e.Message); }
+            catch (IncorrectLocationFormat e) { log.Debug(e.Message); return BadRequest(e.Message); }
+            catch(IncorrectURLFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (Exception e)
             {
                 log.Error(JsonConvert.SerializeObject(e));
@@ -64,6 +66,7 @@ namespace PetzeyPetApi.Controllers
             catch (IncorrectEmailFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (IncorrectPhoneNoFormatException e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (DbUpdateException e) { log.Debug(e.Message); return BadRequest(e.Message); }
+            catch (IncorrectLocationFormat e) { log.Debug(e.Message); return BadRequest(e.Message); }
             catch (Exception e)
             {
                 log.Error(JsonConvert.SerializeObject(e));

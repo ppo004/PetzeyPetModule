@@ -3,7 +3,6 @@
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Data.Entity.Migrations.Infrastructure;
     using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<PetzeyPetDataAccessLayer.PetDbContext>
